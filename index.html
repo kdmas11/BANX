@@ -3,85 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BANX | Live Inventory 2026</title>
+    <title>BANX | 2026 Master Inventory</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F8FAFC; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F8FAFC; color: #0F172A; }
         .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
         .tab-btn.active { color: #4338CA; border-bottom: 2px solid #4338CA; }
-        .product-card { transition: transform 0.2s; }
-        .product-card:hover { transform: translateY(-5px); }
+        .product-card { background: white; border-radius: 24px; overflow: hidden; border: 1px solid #F1F5F9; transition: transform 0.2s; position: relative; }
+        .stock-out { opacity: 0.6; filter: grayscale(1); pointer-events: none; }
+        .stock-out-badge { position: absolute; top: 1rem; right: 1rem; background: #EF4444; color: white; padding: 4px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; z-index: 10; text-transform: uppercase; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="p-6">
+<body class="p-4 md:p-10">
 
-    <header class="max-w-6xl mx-auto mb-12 flex justify-between items-center">
-        <h1 class="text-3xl font-black uppercase tracking-tighter">Banx<span class="text-indigo-600">.</span></h1>
-        <div class="px-4 py-1 bg-indigo-100 text-indigo-700 rounded-full text-[10px] font-bold uppercase">2026 Live Stock</div>
+    <header class="max-w-6xl mx-auto mb-12 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-black uppercase tracking-tighter">Banx<span class="text-indigo-600">.</span></h1>
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">Direct Warehouse Feed</p>
+        </div>
+        <div class="flex bg-white p-1 rounded-xl shadow-sm border border-slate-100">
+            <button class="tab-btn active px-6 py-2 text-xs font-bold uppercase tracking-widest" onclick="openTab(event, 'lighting')">Lighting</button>
+            <button class="tab-btn px-6 py-2 text-xs font-bold uppercase tracking-widest" onclick="openTab(event, 'kitchen')">Kitchen</button>
+        </div>
     </header>
-
-    <div class="flex justify-center space-x-8 mb-12 border-b border-slate-200">
-        <button class="tab-btn pb-4 font-bold text-sm uppercase tracking-widest text-slate-400" onclick="openTab(event, 'lighting')">Lighting</button>
-        <button class="tab-btn pb-4 font-bold text-sm uppercase tracking-widest text-slate-400" onclick="openTab(event, 'kitchen')">Kitchen & Juicers</button>
-    </div>
 
     <main class="max-w-6xl mx-auto">
         
-        <div id="lighting" class="tab-content">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="product-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                    <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/COB-RECHARGEABLE-KEYCHAIN-LIGHT.jpg" class="w-full aspect-square object-contain mb-4 rounded-xl">
-                    <h3 class="font-bold text-lg mb-2">COB Keychain Light</h3>
-                    <div class="flex items-center justify-between">
-                        <span class="text-2xl font-black">₹53</span>
-                        <span class="text-[10px] line-through text-slate-400">MRP ₹150</span>
+        <div id="lighting" class="tab-content active">
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="product-card">
+                    <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/COB-RECHARGEABLE-KEYCHAIN-LIGHT.jpg" class="w-full aspect-square object-contain p-4">
+                    <div class="p-6 pt-0">
+                        <h3 class="font-bold text-sm mb-4 h-10">COB Rechargeable Keychain Light</h3>
+                        <div class="flex items-end justify-between"><span class="text-2xl font-black">₹53</span><span class="text-[10px] font-bold text-green-600 uppercase">In Stock</span></div>
                     </div>
                 </div>
-                <div class="product-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                    <img src="https://ashoppervillage.com/wp-content/uploads/2025/01/3D-MOON-LAMP.jpg" class="w-full aspect-square object-contain mb-4 rounded-xl">
-                    <h3 class="font-bold text-lg mb-2">3D Moon Lamp</h3>
-                    <div class="flex items-center justify-between">
-                        <span class="text-2xl font-black">₹215</span>
-                        <span class="text-[10px] line-through text-slate-400">MRP ₹450</span>
+
+                <div class="product-card">
+                    <img src="https://ashoppervillage.com/wp-content/uploads/2025/01/3D-MOON-LAMP.jpg" class="w-full aspect-square object-contain p-4">
+                    <div class="p-6 pt-0">
+                        <h3 class="font-bold text-sm mb-4 h-10">3D Moon Lamp (15cm)</h3>
+                        <div class="flex items-end justify-between"><span class="text-2xl font-black">₹215</span><span class="text-[10px] font-bold text-green-600 uppercase">In Stock</span></div>
                     </div>
                 </div>
-                <div class="product-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                    <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61JeHh037UL._SL1000_.jpg" class="w-full aspect-square object-contain mb-4 rounded-xl">
-                    <h3 class="font-bold text-lg mb-2">Solar Wall Lamp</h3>
-                    <div class="flex items-center justify-between">
-                        <span class="text-2xl font-black">₹106</span>
-                        <span class="text-[10px] line-through text-slate-400">MRP ₹250</span>
+
+                <div class="product-card">
+                    <img src="https://ashoppervillage.com/wp-content/uploads/2025/01/3d-crystal-ball-night-lamp.jpg" class="w-full aspect-square object-contain p-4">
+                    <div class="p-6 pt-0">
+                        <h3 class="font-bold text-sm mb-4 h-10">3D Crystal Night Lamp</h3>
+                        <div class="flex items-end justify-between"><span class="text-2xl font-black">₹72</span><span class="text-[10px] font-bold text-green-600 uppercase">In Stock</span></div>
+                    </div>
+                </div>
+
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51T3YlTrG3L.jpg" class="w-full aspect-square object-contain p-4">
+                    <div class="p-6 pt-0">
+                        <h3 class="font-bold text-sm mb-4 h-10">Solar 100 LED Light</h3>
+                        <div class="flex items-end justify-between"><span class="text-2xl font-black">₹105</span></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="kitchen" class="tab-content">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="product-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                    <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71Q2Smvs1RL._SL1500_.jpg" class="w-full aspect-square object-contain mb-4 rounded-xl">
-                    <h3 class="font-bold text-lg mb-2">6 Blade USB Juicer</h3>
-                    <div class="flex items-center justify-between">
-                        <span class="text-2xl font-black">₹175</span>
-                        <span class="text-[10px] line-through text-slate-400">MRP ₹350</span>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="product-card">
+                    <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71Q2Smvs1RL._SL1500_.jpg" class="w-full aspect-square object-contain p-4">
+                    <div class="p-6 pt-0">
+                        <h3 class="font-bold text-sm mb-4 h-10">6 Blade USB Juicer</h3>
+                        <div class="flex items-end justify-between"><span class="text-2xl font-black">₹175</span><span class="text-[10px] font-bold text-green-600 uppercase">In Stock</span></div>
                     </div>
                 </div>
-                <div class="product-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                    <img src="https://ashoppervillage.com/wp-content/uploads/2025/01/612IgimUC3L._SL1085_.jpg" class="w-full aspect-square object-contain mb-4 rounded-xl">
-                    <h3 class="font-bold text-lg mb-2">Nima Electric Grinder</h3>
-                    <div class="flex items-center justify-between">
-                        <span class="text-2xl font-black">₹230</span>
-                        <span class="text-[10px] line-through text-slate-400">MRP ₹500</span>
+
+                <div class="product-card">
+                    <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41j4GtvNmaS.jpg" class="w-full aspect-square object-contain p-4">
+                    <div class="p-6 pt-0">
+                        <h3 class="font-bold text-sm mb-4 h-10">Mini Coffee Beater</h3>
+                        <div class="flex items-end justify-between"><span class="text-2xl font-black">₹45</span><span class="text-[10px] font-bold text-green-600 uppercase">In Stock</span></div>
                     </div>
                 </div>
-                <div class="product-card bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                    <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51DJMxyQx5L._SX569_.jpg" class="w-full aspect-square object-contain mb-4 rounded-xl">
-                    <h3 class="font-bold text-lg mb-2">Mini Bottle Juicer</h3>
-                    <div class="flex items-center justify-between">
-                        <span class="text-2xl font-black">₹148</span>
-                        <span class="text-[10px] line-through text-slate-400">MRP ₹300</span>
+
+                <div class="product-card">
+                    <img src="https://ashoppervillage.com/wp-content/uploads/2025/01/612IgimUC3L._SL1085_.jpg" class="w-full aspect-square object-contain p-4">
+                    <div class="p-6 pt-0">
+                        <h3 class="font-bold text-sm mb-4 h-10">Nima Electric Grinder</h3>
+                        <div class="flex items-end justify-between"><span class="text-2xl font-black">₹230</span><span class="text-[10px] font-bold text-green-600 uppercase">In Stock</span></div>
+                    </div>
+                </div>
+
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <img src="https://ashoppervillage.com/wp-content/uploads/2026/02/H4e81c477ecdb4ff69a9d855321f0217ad.jpg" class="w-full aspect-square object-contain p-4">
+                    <div class="p-6 pt-0">
+                        <h3 class="font-bold text-sm mb-4 h-10">Blender Cup (Portable)</h3>
+                        <div class="flex items-end justify-between"><span class="text-2xl font-black">₹215</span></div>
                     </div>
                 </div>
             </div>
@@ -91,16 +110,13 @@
 
     <script>
         function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) tabcontent[i].classList.remove("active");
-            tablinks = document.getElementsByClassName("tab-btn");
-            for (i = 0; i < tablinks.length; i++) tablinks[i].classList.remove("active");
+            const contents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
+            const buttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
         }
-        // Auto-open first tab
-        document.querySelector('.tab-btn').click();
     </script>
 </body>
 </html>
