@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BANX | Full Inventory 2026</title>
+    <title>BANX | Official Inventory 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F8FAFC; color: #0F172A; scroll-behavior: smooth; }
-        .glass-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
         .btn-action { background: linear-gradient(135deg, #4338CA 0%, #6D28D9 100%); transition: all 0.3s ease; }
-        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4); }
         
-        /* Shimmer for slow images */
         @keyframes shimmer { 0% { background-position: -468px 0; } 100% { background-position: 468px 0; } }
         .img-placeholder { background: #f6f7f8; background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%); background-repeat: no-repeat; background-size: 800px 104px; animation: shimmer 1.5s linear infinite; }
 
-        /* Tabs Logic */
         .product-card { opacity: 0; transform: translateY(20px); transition: all 0.5s ease-out; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -33,152 +30,109 @@
     <header class="glass-header border-b border-slate-100 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-6 flex justify-between items-center h-20">
             <div class="text-2xl font-black tracking-tighter uppercase">Banx<span class="text-indigo-600">.</span></div>
-            <div class="text-[10px] font-bold text-slate-400 border border-slate-200 px-3 py-1 rounded-full">LIVE INVENTORY</div>
+            <div class="text-[10px] font-bold text-slate-400 border border-slate-200 px-3 py-1 rounded-full tracking-widest uppercase">Verified Stock</div>
         </div>
     </header>
 
     <main class="flex-grow max-w-6xl mx-auto px-6 py-12 w-full">
         
         <div class="text-center mb-12">
-            <h2 class="text-4xl font-extrabold tracking-tight mb-2">Market Price Comparison</h2>
-            <p class="text-slate-500 text-sm">Select a category to view all available stock.</p>
+            <h2 class="text-4xl font-extrabold tracking-tight mb-2">Live Inventory</h2>
+            <p class="text-slate-500 text-sm">Select a category to view full direct-import prices.</p>
         </div>
 
-        <div class="flex justify-center mb-16 space-x-8 md:space-x-12">
+        <div class="flex justify-center mb-16 space-x-12">
             <button class="tab-btn pb-4 text-xs uppercase tracking-widest" onclick="showCat(event, 'lighting')">Lighting</button>
             <button class="tab-btn pb-4 text-xs uppercase tracking-widest" onclick="showCat(event, 'juicer')">Kitchen & Juicers</button>
         </div>
 
         <div id="empty-state" class="py-20 text-center">
-            <div class="opacity-20 text-6xl mb-4">📦</div>
-            <p class="text-slate-400 font-bold uppercase tracking-widest text-xs">Choose a category to display products</p>
+            <div class="opacity-20 text-6xl mb-4">🛒</div>
+            <p class="text-slate-400 font-bold uppercase tracking-widest text-xs">Tap a category above</p>
         </div>
 
         <div id="lighting" class="tab-content">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
-                    <div class="aspect-square bg-slate-50 rounded-2xl mb-6 flex items-center justify-center text-5xl">💡</div>
+                    <div class="img-placeholder aspect-square rounded-2xl mb-6 overflow-hidden border border-slate-50">
+                        <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/COB-RECHARGEABLE-KEYCHAIN-LIGHT.jpg" loading="lazy" class="w-full h-full object-contain bg-white" onload="this.parentElement.classList.remove('img-placeholder')">
+                    </div>
                     <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">COB Keychain Light</h3>
                     <div class="bg-slate-50 p-4 rounded-2xl mb-6">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Competitor: ₹200</div>
-                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Our Price</div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-3xl font-black text-slate-900">₹55</span>
-                            <span class="saving-badge">Save ₹145</span>
-                        </div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Retail: ₹120</div>
+                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Banx Price</div>
+                        <div class="flex items-center justify-between"><span class="text-3xl font-black">₹53</span><span class="saving-badge">Save ₹67</span></div>
                     </div>
-                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Buy Now</button>
+                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Add to Cart</button>
                 </div>
 
-                <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm" style="transition-delay: 0.1s;">
-                    <div class="aspect-square bg-slate-50 rounded-2xl mb-6 flex items-center justify-center text-5xl">🌕</div>
-                    <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">3D Moon Lamp</h3>
+                <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
+                    <div class="img-placeholder aspect-square rounded-2xl mb-6 overflow-hidden border border-slate-50">
+                        <img src="https://ashoppervillage.com/wp-content/uploads/2025/01/3D-MOON-LAMP.jpg" loading="lazy" class="w-full h-full object-contain bg-white" onload="this.parentElement.classList.remove('img-placeholder')">
+                    </div>
+                    <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">3D Moon Lamp (15cm)</h3>
                     <div class="bg-slate-50 p-4 rounded-2xl mb-6">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Competitor: ₹350</div>
-                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Our Price</div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-3xl font-black text-slate-900">₹200</span>
-                            <span class="saving-badge">Save ₹150</span>
-                        </div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Retail: ₹350</div>
+                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Banx Price</div>
+                        <div class="flex items-center justify-between"><span class="text-3xl font-black">₹215</span><span class="saving-badge">Save ₹135</span></div>
                     </div>
-                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Buy Now</button>
+                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Add to Cart</button>
                 </div>
 
-                <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm" style="transition-delay: 0.2s;">
-                    <div class="aspect-square bg-slate-50 rounded-2xl mb-6 flex items-center justify-center text-5xl">🔮</div>
+                <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
+                    <div class="img-placeholder aspect-square rounded-2xl mb-6 overflow-hidden border border-slate-50">
+                        <img src="https://ashoppervillage.com/wp-content/uploads/2025/01/3d-crystal-ball-night-lamp.jpg" loading="lazy" class="w-full h-full object-contain bg-white" onload="this.parentElement.classList.remove('img-placeholder')">
+                    </div>
                     <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">Crystal Night Lamp</h3>
                     <div class="bg-slate-50 p-4 rounded-2xl mb-6">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Competitor: ₹200</div>
-                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Our Price</div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-3xl font-black text-slate-900">₹72</span>
-                            <span class="saving-badge">Save ₹128</span>
-                        </div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Retail: ₹150</div>
+                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Banx Price</div>
+                        <div class="flex items-center justify-between"><span class="text-3xl font-black">₹72</span><span class="saving-badge">Save ₹78</span></div>
                     </div>
-                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Buy Now</button>
+                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Add to Cart</button>
                 </div>
             </div>
         </div>
 
         <div id="juicer" class="tab-content">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
                 <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
                     <div class="img-placeholder aspect-square rounded-2xl mb-6 overflow-hidden border border-slate-50">
                         <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71Q2Smvs1RL._SL1500_.jpg" loading="lazy" class="w-full h-full object-contain bg-white" onload="this.parentElement.classList.remove('img-placeholder')">
                     </div>
-                    <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">6 Blade 2 USB Juicer</h3>
+                    <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">6 Blade USB Juicer</h3>
                     <div class="bg-slate-50 p-4 rounded-2xl mb-6">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Competitor: ₹350</div>
-                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Our Price</div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Retail: ₹350</div>
+                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Banx Price</div>
                         <div class="flex items-center justify-between"><span class="text-3xl font-black">₹175</span><span class="saving-badge">Save ₹175</span></div>
                     </div>
-                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Buy Now</button>
-                </div>
-
-                <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm" style="transition-delay: 0.1s;">
-                    <div class="img-placeholder aspect-square rounded-2xl mb-6 overflow-hidden border border-slate-50">
-                        <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51DJMxyQx5L._SX569_.jpg" loading="lazy" class="w-full h-full object-contain bg-white" onload="this.parentElement.classList.remove('img-placeholder')">
-                    </div>
-                    <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">Mini Bottle Juicer</h3>
-                    <div class="bg-slate-50 p-4 rounded-2xl mb-6">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Competitor: ₹300</div>
-                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Our Price</div>
-                        <div class="flex items-center justify-between"><span class="text-3xl font-black">₹165</span><span class="saving-badge">Save ₹135</span></div>
-                    </div>
-                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Buy Now</button>
-                </div>
-
-                <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm" style="transition-delay: 0.2s;">
-                    <div class="img-placeholder aspect-square rounded-2xl mb-6 overflow-hidden border border-slate-50">
-                        <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41j4GtvNmaS.jpg" loading="lazy" class="w-full h-full object-contain bg-white" onload="this.parentElement.classList.remove('img-placeholder')">
-                    </div>
-                    <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">Coffee Beater</h3>
-                    <div class="bg-slate-50 p-4 rounded-2xl mb-6">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Competitor: ₹150</div>
-                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Our Price</div>
-                        <div class="flex items-center justify-between"><span class="text-3xl font-black">₹45</span><span class="saving-badge">Save ₹105</span></div>
-                    </div>
-                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Buy Now</button>
+                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Add to Cart</button>
                 </div>
 
                 <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
-                    <div class="img-placeholder aspect-square rounded-2xl mb-6 overflow-hidden border border-slate-50">
-                        <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61CMTdh6cEL._SX569_.jpg" loading="lazy" class="w-full h-full object-contain bg-white" onload="this.parentElement.classList.remove('img-placeholder')">
-                    </div>
-                    <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">Electric Coffee Grinder</h3>
-                    <div class="bg-slate-50 p-4 rounded-2xl mb-6">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Competitor: ₹450</div>
-                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Our Price</div>
-                        <div class="flex items-center justify-between"><span class="text-3xl font-black">₹265</span><span class="saving-badge">Save ₹185</span></div>
-                    </div>
-                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Buy Now</button>
-                </div>
-
-                <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm" style="transition-delay: 0.1s;">
                     <div class="img-placeholder aspect-square rounded-2xl mb-6 overflow-hidden border border-slate-50">
                         <img src="https://ashoppervillage.com/wp-content/uploads/2025/01/612IgimUC3L._SL1085_.jpg" loading="lazy" class="w-full h-full object-contain bg-white" onload="this.parentElement.classList.remove('img-placeholder')">
                     </div>
                     <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">Nima Electric Grinder</h3>
                     <div class="bg-slate-50 p-4 rounded-2xl mb-6">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Competitor: ₹400</div>
-                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Our Price</div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Retail: ₹400</div>
+                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Banx Price</div>
                         <div class="flex items-center justify-between"><span class="text-3xl font-black">₹230</span><span class="saving-badge">Save ₹170</span></div>
                     </div>
-                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Buy Now</button>
+                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Add to Cart</button>
                 </div>
 
-                <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm" style="transition-delay: 0.2s;">
+                <div class="product-card bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
                     <div class="img-placeholder aspect-square rounded-2xl mb-6 overflow-hidden border border-slate-50">
-                        <img src="https://ashoppervillage.com/wp-content/uploads/2026/02/H4e81c477ecdb4ff69a9d855321f0217ad.jpg" loading="lazy" class="w-full h-full object-contain bg-white" onload="this.parentElement.classList.remove('img-placeholder')">
+                        <img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41j4GtvNmaS.jpg" loading="lazy" class="w-full h-full object-contain bg-white" onload="this.parentElement.classList.remove('img-placeholder')">
                     </div>
-                    <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">Portable Blender with Cup</h3>
+                    <h3 class="font-bold text-slate-800 text-lg mb-4 h-12">Coffee Beater</h3>
                     <div class="bg-slate-50 p-4 rounded-2xl mb-6">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Competitor: ₹350</div>
-                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Our Price</div>
-                        <div class="flex items-center justify-between"><span class="text-3xl font-black">₹215</span><span class="saving-badge">Save ₹135</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase text-right line-through">Retail: ₹120</div>
+                        <div class="text-[10px] font-bold text-indigo-600 uppercase mb-1">Banx Price</div>
+                        <div class="flex items-center justify-between"><span class="text-3xl font-black">₹45</span><span class="saving-badge">Save ₹75</span></div>
                     </div>
-                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Buy Now</button>
+                    <button class="btn-action w-full py-4 text-white rounded-2xl text-[10px] font-black uppercase">Add to Cart</button>
                 </div>
             </div>
         </div>
