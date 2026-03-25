@@ -10,8 +10,8 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F8FAFC; color: #0F172A; }
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
-        .tab-btn { transition: all 0.3s ease; }
-        .tab-btn.active { color: #4338CA; border-bottom: 2px solid #4338CA; }
+        .tab-btn { transition: all 0.3s ease; border-bottom: 2px solid transparent; }
+        .tab-btn.active { color: #4338CA; border-bottom-color: #4338CA; }
         .product-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; transition: transform 0.2s; position: relative; }
         
         /* Stock Out Styles */
@@ -31,9 +31,10 @@
             <h1 class="text-3xl font-black uppercase tracking-tighter">Banx<span class="text-indigo-600">.</span></h1>
             <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Full Database Sync</p>
         </div>
-        <div class="flex space-x-6">
-            <button class="tab-btn active pb-2 text-sm font-bold uppercase tracking-widest" onclick="openTab(event, 'lighting')">Lighting (10)</button>
-            <button class="tab-btn pb-2 text-sm font-bold uppercase tracking-widest" onclick="openTab(event, 'kitchen')">Kitchen & Juicers (10)</button>
+        <div class="flex space-x-6 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
+            <button class="tab-btn active pb-2 text-sm font-bold uppercase tracking-widest whitespace-nowrap" onclick="openTab(event, 'lighting')">Lighting (10)</button>
+            <button class="tab-btn pb-2 text-sm font-bold uppercase tracking-widest whitespace-nowrap" onclick="openTab(event, 'kitchen')">Juicer & Kitchen (9)</button>
+            <button class="tab-btn pb-2 text-sm font-bold uppercase tracking-widest whitespace-nowrap" onclick="openTab(event, 'other')">Other (2)</button>
         </div>
     </header>
 
@@ -41,18 +42,17 @@
         
         <div id="lighting" class="tab-content active">
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-                
                 <div class="product-card">
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41EofaexcXL._SL1000_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41EofaexcXL._SL1000_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">COB Keychain Light</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">COB Rechargeable Keychain Light</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">₹55</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
                     </div>
                 </div>
 
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/517APRHUfRL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/517APRHUfRL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Star Master</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="product-card">
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51T3YlTrG3L.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51T3YlTrG3L.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Solar Light 100 LED</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">₹105</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
@@ -69,7 +69,7 @@
 
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61NIlaxPFRL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61NIlaxPFRL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">USB LED Light</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
@@ -78,15 +78,15 @@
 
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41J7xksNPwS.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41J7xksNPwS.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">20 LED Solar Motion</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">20 LED Solar Motion Sensor</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
 
                 <div class="product-card">
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61wzBKobVLL._SL1100_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61wzBKobVLL._SL1100_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">3D Moon Lamp</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">₹200</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
@@ -94,7 +94,7 @@
                 </div>
 
                 <div class="product-card">
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61JeHh037UL._SL1000_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61JeHh037UL._SL1000_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Solar Wall Lamp</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">₹108</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
@@ -103,26 +103,26 @@
 
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
-                    <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Water+Diya" class="w-full h-full object-contain p-2"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71v1N2N2BvL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Water Sensor Diya</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Water Sensor Diya (12 PCS)</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
 
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
-                    <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Hexagon+Light" class="w-full h-full object-contain p-2"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61p-3qZ1j1L._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Hexagon Light</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Hexagon Light With Remote</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
 
                 <div class="product-card">
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/03/41nERJe0mhL._SX342_SY445_QL70_FMwebp_.webp" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/03/41nERJe0mhL._SX342_SY445_QL70_FMwebp_.webp" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">3D Crystal Ball</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">3D Crystal Ball Night Lamp</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">₹72</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
                 
                 <div class="product-card">
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71Q2Smvs1RL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71Q2Smvs1RL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">6 Blade 2 USB Juicer</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">₹175</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
@@ -142,24 +142,24 @@
 
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/31Z1S1GW-FL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/31Z1S1GW-FL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Portable Juicer 400ML</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Portable Juicer Blender - 400 ML</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
 
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71lddAe87lL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71lddAe87lL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Aluminum Fruit Press</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Aluminum Fruit Press Juicer</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
 
                 <div class="product-card">
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51DJMxyQx5L._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51DJMxyQx5L._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Mini Bottle Juicer</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">₹165</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
@@ -168,24 +168,24 @@
 
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/01/61dSRlPhFtL._SX679_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/01/61dSRlPhFtL._SX679_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Automatic Citrus Press</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Automatic Citrus Press Juicer</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
 
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
-                    <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Scarlet+Beater" class="w-full h-full object-contain p-2"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51m-Scarlet-Beater.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Scarlet+Beater'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Scarlet Beater (260W)</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Scarlet Beater (260 W)</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
 
                 <div class="product-card">
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41j4GtvNmaS.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41j4GtvNmaS.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Coffee Beater</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">₹45</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
@@ -193,7 +193,7 @@
                 </div>
 
                 <div class="product-card">
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61CMTdh6cEL._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61CMTdh6cEL._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Electric Coffee Grinder</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">₹265</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
@@ -201,17 +201,30 @@
                 </div>
 
                 <div class="product-card">
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/01/612IgimUC3L._SL1085_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/01/612IgimUC3L._SL1085_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Nima Electric Grinder</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">NIMA Electric Grinder</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">₹230</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="other" class="tab-content">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51V2q0S-2pL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Neck Fan</h3>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black">₹160</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
                     </div>
                 </div>
 
                 <div class="product-card">
-                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/02/H4e81c477ecdb4ff69a9d855321f0217ad.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Not+Found'"></div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/02/H4e81c477ecdb4ff69a9d855321f0217ad.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Portable Blender Cup</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Portable Blender with Straw Cup</h3>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">₹215</span><span class="text-[9px] font-bold text-green-600 uppercase">In Stock</span></div>
                     </div>
                 </div>
