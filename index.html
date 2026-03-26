@@ -14,26 +14,32 @@
         .tab-btn.active { color: #4338CA; border-bottom-color: #4338CA; }
         .product-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; transition: transform 0.2s; position: relative; }
         
-        /* Stock Out Styles */
         .stock-out { opacity: 0.6; filter: grayscale(1); pointer-events: none; }
         .stock-out-badge { position: absolute; top: 1rem; right: 1rem; background: #EF4444; color: white; padding: 4px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; z-index: 10; text-transform: uppercase; letter-spacing: 0.05em; }
         
-        /* Image fallback styling */
-        .img-container { background: #F1F5F9; display: flex; align-items: center; justify-content: center; }
+        .img-container { background: #F1F5F9; display: flex; align-items: center; justify-content: center; position: relative; }
         
+        /* Hide scrollbar for tabs */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <header class="max-w-7xl mx-auto mb-10 border-b border-slate-200 pb-8 text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
-        <div>
+    <header class="max-w-7xl mx-auto mb-10 border-b border-slate-200 pb-8 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="text-center md:text-left">
             <h1 class="text-3xl font-black uppercase tracking-tighter">Banx<span class="text-indigo-600">.</span></h1>
             <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">For the people who love living</p>
         </div>
-        <div class="flex space-x-6 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
+        
+        <div class="flex space-x-6 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 no-scrollbar">
             <button class="tab-btn active pb-2 text-sm font-bold uppercase tracking-widest whitespace-nowrap" onclick="openTab(event, 'lighting')">Lighting (12)</button>
-            <button class="tab-btn pb-2 text-sm font-bold uppercase tracking-widest whitespace-nowrap" onclick="openTab(event, 'juicer')">Juicers & Kitchen (11)</button>
+            <button class="tab-btn pb-2 text-sm font-bold uppercase tracking-widest whitespace-nowrap" onclick="openTab(event, 'juicer')">Juicers (11)</button>
+            <button class="tab-btn pb-2 text-sm font-bold uppercase tracking-widest whitespace-nowrap" onclick="openTab(event, 'bottles')">Bottles (19)</button>
+            <button class="tab-btn pb-2 text-sm font-bold uppercase tracking-widest whitespace-nowrap" onclick="openTab(event, 'mops')">Mops (14)</button>
+            <button class="tab-btn pb-2 text-sm font-bold uppercase tracking-widest whitespace-nowrap" onclick="openTab(event, 'kitchen')">Kitchen (11)</button>
         </div>
     </header>
 
@@ -41,116 +47,104 @@
         
         <div id="lighting" class="tab-content active">
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-                
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41EofaexcXL._SL1000_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">COB Rechargeable Keychain Light</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹200</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹55</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹145</span></div>
                     </div>
                 </div>
-
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/517APRHUfRL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Star Master</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">&nbsp;</div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51T3YlTrG3L.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Solar Light 100 LED</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹250</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹250</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹105</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹145</span></div>
                     </div>
                 </div>
-
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61NIlaxPFRL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">USB LED Light</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">&nbsp;</div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
-
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41J7xksNPwS.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">20 LED Solar Motion Sensor Light</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">&nbsp;</div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61wzBKobVLL._SL1100_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">3D Moon Lamp</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹350</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹350</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹200</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹150</span></div>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61JeHh037UL._SX679_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Solar Wall Lamp</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹250</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹250</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹108</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹142</span></div>
                     </div>
                 </div>
-
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71YBU22yw0L._SX522_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Camping Hanging Bulb</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">&nbsp;</div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71XfE2lBxS._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Solar Deck Lights (4PCS SET)</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹200</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹125</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹75</span></div>
                     </div>
                 </div>
-
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/02/ASV-338-1.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Dual Outdoor Solar Light</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">&nbsp;</div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/02/51uzii8WiL._SX342_SY445_QL70_FMwebp_.webp" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Plasma Lighter</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹350</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹350</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹75</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹275</span></div>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/03/41nERJe0mhL._SX342_SY445_QL70_FMwebp_.webp" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">3d crystal ball night lamp</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹200</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹72</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹128</span></div>
                     </div>
                 </div>
@@ -159,111 +153,466 @@
 
         <div id="juicer" class="tab-content">
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-                
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71Q2Smvs1RL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">6 Blade 2 USB juicer Electrical</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹350</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹350</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹175</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹175</span></div>
                     </div>
                 </div>
-
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/31Z1S1GW-FL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">PORTABLE JUICER BLENDER - 400 ML</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">&nbsp;</div>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">PORTABLE JUICER BLENDER</h3>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
-
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71lddAe87lL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Aluminum Fruit Press Juicer</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">&nbsp;</div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51DJMxyQx5L._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Mini Bottle Juicer</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹300</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹300</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹165</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹135</span></div>
                     </div>
                 </div>
-
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/01/61dSRlPhFtL._SX679_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Automatic Citrus Press Juicer</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">&nbsp;</div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
-
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71a0dMQQrtL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Scarlet Beater (260 W)</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">&nbsp;</div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41j4GtvNmaS.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Coffee Beater</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹150</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹150</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹45</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹105</span></div>
                     </div>
                 </div>
-                
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51I8VJZcm8L._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Hand Mixi</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase mb-1">&nbsp;</div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61CMTdh6cEL._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Electric Coffee Grinder</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹450</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹450</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹265</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹185</span></div>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/01/612IgimUC3L._SL1085_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Nima electric grinder</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹400</div>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹400</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹230</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹170</span></div>
                     </div>
                 </div>
-
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/02/H4e81c477ecdb4ff69a9d855321f0217ad.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">PORTABLE BLENDER ELECTRIC JUICERS WITH CUP</h3>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase line-through mb-1">Retail: ₹350</div>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">PORTABLE BLENDER WITH CUP</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹350</div>
                         <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹215</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹135</span></div>
                     </div>
                 </div>
+            </div>
+        </div>
 
+        <div id="bottles" class="tab-content">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/619yWdi4nbS._SL1500_-Copy.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Diamond Water Bottle (3 PIS)</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71QlXYNFsL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Motivational Time Water Bottle</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹300</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹95</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹205</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61y3whm4TGL._SL1200_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">LED Temperature Display Bottle</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹400</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹120</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹280</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61xCUFWTINL._SL1037_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Penguin Shape Water Bottle</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61RnDFDR89L._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Motivational Water Bottle (Set of 3)</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹450</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹200</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹250</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61AnQAPAdtL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Mist Spray Water Bottle</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/517HfbvBuPL._SX679_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Nice Water Bottle 400ml</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹100</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹35</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹65</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/01/51xjdu8hWrL._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Transparent Motivational Bottles</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹300</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹105</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹195</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61msNeNFpHL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Vacuum Flask Set with 3 Cups</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹450</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹175</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹275</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/04/ASV-336-LIVE-IMAGE-3.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Printed Water Bottle (3 pcs)</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹250</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹80</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹170</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/04/41IARghrPuL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Transp Motivational Bottles (Set of 3)</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹400</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹175</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹225</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/04/41tvV5EeZYL._SX569_-1.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Pro Shaker Bottle</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹150</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹68</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹82</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/04/31crX8inTFL._SY300_SX300_QL70_FMwebp_.webp" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Square Shape Water Bottle (PACK OF 3)</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/09/H9431c5e7d33e487a9acc353d71b4a192u.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Tumbler with Handle Straw</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹500</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹275</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹225</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/09/61kHUoK6JzL._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Ice Cream Bottle Mug with Straw</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹250</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹100</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹150</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/11/519OCTKojbL._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Rassi Water Bottle</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹300</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹140</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹160</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/12/71HIKmGmUSL._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">6pcs Steel Cap Diamond Bottle</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹600</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹300</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹300</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/12/61FeMALLigL._SX522_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Plastic Nice Water Bottle</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹100</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹30</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹70</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/01/51KiVkV0qL._SX679_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Rabbit Glass Water Bottle</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹100</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹50</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹50</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="mops" class="tab-content">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61RuCKB0iS._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">2 IN 1 SWEEPER MOP</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51uGeip-VRL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">MICRO FIBER FLAT MOP</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/519G-qR8b7L._SL1000_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Fan Cleaning Mop</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹85</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹115</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71ZlO5fKmiL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">MICROFIBER CLEANING MOP (100 INCH)</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹75</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹125</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/616tQ9h7rkL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Triangle Mop Road</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61m7J8SBbFL._SL1466_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">2 in 1 Tiles Cleaning Brush</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹150</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹55</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹95</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/31g4IEppBKL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">3 in 1 Tiles Cleaning Brush</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹60</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹140</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/WhatsApp-Image-2024-03-26-at-16.34.26_b28e5f42.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Floor Cleaning Squeeze Mop</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/612fo91O1QL._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Portable Mini Mop</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41SDkcgyroL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">2-in-1 Mesh Cleaning Brush Wiper</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹140</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹40</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹100</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71RCEV7XnkL._SX679_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">360° Rotatable Triangle Mop</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/31cceDTEkEL._SX679_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Spray Mop</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/06/71MhaKkUASL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Twist Mop</h3>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹100</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/09/51RoxAYWWmL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">SLIM FLOOR WIPER</h3>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹70</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="kitchen" class="tab-content">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=5+in+1+Chopper" class="w-full h-full object-contain p-2"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">5 In 1 Nicer Dicer Chopper</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Wet+Chopper" class="w-full h-full object-contain p-2"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">WET CHOPPER</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Chopping+Board" class="w-full h-full object-contain p-2"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Cut And Wash Chopping Board</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Apple+Cutter" class="w-full h-full object-contain p-2"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">STEEL APPLE CUTTER</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41oFvFW5S1L._SL1024_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Dry Fruit Slicer</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹100</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹35</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹65</span></div>
+                    </div>
+                </div>
+                <div class="product-card stock-out">
+                    <div class="stock-out-badge">Stock Out</div>
+                    <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Knife+and+Peeler" class="w-full h-full object-contain p-2"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">2 in 1 knife and peeler</h3>
+                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51xYCuQyHoL._SX679_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Portable Hand Saw For Wood</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹50</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹20</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹30</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/02/ASV-345-1.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Electric Mini Garlic Chopper</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹300</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹130</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹170</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/12/71jxuYiBX-L._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">4 in 1 Portable Veg Cutter</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹400</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹210</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹190</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/01/51XZUezdaL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">4-pcs knife & Scissor set</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹400</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹190</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹210</span></div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/03/61bUpWYWBJL._SL1000_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                    <div class="p-4 pt-3">
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Fruit & Vegetable Peeler</h3>
+                        <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹600</div>
+                        <div class="flex items-end justify-between"><span class="text-lg font-black text-indigo-700">₹370</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹230</span></div>
+                    </div>
+                </div>
             </div>
         </div>
 
