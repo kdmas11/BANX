@@ -13,13 +13,15 @@
         .tab-content { display: none; opacity: 0; }
         .tab-content.active { display: flex; flex-direction: column; animation: slideUp 0.4s ease forwards; }
         
-        /* Subtle Highlight Nav Tabs - Using Trust Blue */
+        /* Subtle Highlight Nav Tabs */
         .tab-btn { transition: all 0.3s ease; }
         .tab-btn.active { background-color: #EFF6FF; color: #2563EB; } 
         
         /* Product Card Styles */
-        .product-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; transition: transform 0.2s; position: relative; }
+        .product-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; transition: transform 0.2s; position: relative; display: flex; flex-direction: column; }
         .product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+        .product-card > .p-4 { display: flex; flex-direction: column; flex-grow: 1; }
+        
         .stock-out { opacity: 0.6; filter: grayscale(1); pointer-events: none; }
         .stock-out-badge { position: absolute; top: 1rem; right: 1rem; background: #EF4444; color: white; padding: 4px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; z-index: 10; text-transform: uppercase; letter-spacing: 0.05em; }
         .img-container { background: #F1F5F9; display: flex; align-items: center; justify-content: center; position: relative; }
@@ -41,10 +43,10 @@
         .glitter-text {
             background: linear-gradient(
                 to right,
-                #2563EB 20%, /* Blue */
-                #06B6D4 30%, /* Cyan */
-                #8B5CF6 40%, /* Purple */
-                #2563EB 50%, /* Blue */
+                #2563EB 20%, 
+                #06B6D4 30%, 
+                #8B5CF6 40%, 
+                #2563EB 50%, 
                 #06B6D4 60%,
                 #8B5CF6 70%,
                 #2563EB 80%
@@ -62,16 +64,47 @@
             50% { transform: translateX(8px); }
         }
         .swipe-hint { animation: swipeHint 1.5s infinite ease-in-out; display: inline-flex; align-items: center; }
+        
+        /* Menu dropdown transition */
+        #dropdown-menu { transition: opacity 0.2s ease, transform 0.2s ease; transform-origin: top right; }
+        .menu-hidden { opacity: 0; transform: scale(0.95); pointer-events: none; }
+        .menu-visible { opacity: 1; transform: scale(1); pointer-events: auto; }
+        
+        /* Box Animation */
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2) rotate(-5deg); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        .box-pop { animation: pop 0.4s ease forwards; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <header class="max-w-7xl mx-auto mb-8 border-b border-slate-200 pb-6 flex flex-col md:flex-row justify-between items-center gap-6 sticky top-0 bg-[#F8FAFC]/90 backdrop-blur-md z-50">
-        <div class="text-center md:text-left pt-2 md:pt-0">
-            <h1 class="text-3xl font-black uppercase tracking-tighter cursor-pointer hover:opacity-80 transition-opacity" onclick="goHome()">
-                Banx<span class="text-blue-600">.</span>
-            </h1>
-            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">For the people who love living</p>
+    <header class="max-w-7xl mx-auto mb-8 border-b border-slate-200 pb-6 flex flex-col md:flex-row justify-between items-center gap-6 sticky top-0 bg-[#F8FAFC]/90 backdrop-blur-md z-40">
+        
+        <div class="flex justify-between items-center w-full md:w-auto relative">
+            <div class="text-left pt-2 md:pt-0">
+                <h1 class="text-3xl font-black uppercase tracking-tighter cursor-pointer hover:opacity-80 transition-opacity" onclick="goHome()">
+                    Banx<span class="text-blue-600">.</span>
+                </h1>
+                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">For the people who love living</p>
+            </div>
+            
+            <button onclick="toggleMenu()" class="p-2 text-slate-400 hover:text-blue-600 transition-colors focus:outline-none">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                    <circle cx="12" cy="5" r="1" fill="currentColor"></circle>
+                    <circle cx="12" cy="12" r="1" fill="currentColor"></circle>
+                    <circle cx="12" cy="19" r="1" fill="currentColor"></circle>
+                </svg>
+            </button>
+
+            <div id="dropdown-menu" class="menu-hidden absolute top-12 right-0 mt-2 w-48 bg-white/95 backdrop-blur-xl border border-slate-100 shadow-xl rounded-2xl z-50 overflow-hidden">
+                <div class="flex flex-col p-2">
+                    <button onclick="openStory(); toggleMenu()" class="text-left px-4 py-3 text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors">📖 Our Story</button>
+                    <button onclick="openGame(); toggleMenu()" class="text-left px-4 py-3 text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors">🎮 Play & Win</button>
+                </div>
+            </div>
         </div>
         
         <nav id="inventory-nav" class="flex space-x-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 no-scrollbar scroll-smooth items-center">
@@ -83,11 +116,10 @@
         </nav>
     </header>
 
-    <main class="max-w-7xl mx-auto touch-pan-y min-h-[70vh]">
+    <main class="max-w-7xl mx-auto touch-pan-y min-h-[70vh] pb-10 relative">
         
-        <div id="home" class="tab-content active h-full justify-center mt-10 md:mt-20">
-            <div class="text-center px-4">
-                
+        <div id="home" class="tab-content active h-full flex flex-col justify-center items-center mt-10 md:mt-20 relative min-h-[60vh]">
+            <div class="text-center px-4 flex-grow flex flex-col justify-center items-center">
                 <h2 class="text-sm md:text-xl font-extrabold tracking-[0.2em] mb-10 text-slate-300 uppercase">
                     Welcome to Banx Store
                 </h2>
@@ -116,7 +148,12 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            
+            <div class="mt-20 md:absolute md:bottom-0 text-center w-full">
+                <p class="text-[10px] md:text-xs font-bold text-slate-400 tracking-[0.3em] uppercase">
+                    Made with <span class="text-red-500 animate-pulse inline-block">❤️</span> from Belgaum
+                </p>
             </div>
         </div>
 
@@ -127,7 +164,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">COB Rechargeable Keychain Light</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹55</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹145</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹55</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹145</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -136,7 +174,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Star Master</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -144,7 +183,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Solar Light 100 LED</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹250</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹105</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹145</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹105</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹145</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -153,16 +193,18 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">USB LED Light</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card stock-out">
                     <div class="stock-out-badge">Stock Out</div>
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/41J7xksNPwS.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">20 LED Solar Motion Sensor Light</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">20 LED Solar Motion Sensor</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -170,7 +212,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">3D Moon Lamp</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹350</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹200</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹150</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹200</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹150</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -178,7 +221,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Solar Wall Lamp</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹250</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹108</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹142</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹108</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹142</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -187,7 +231,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Camping Hanging Bulb</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -195,7 +240,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Solar Deck Lights (4PCS SET)</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹125</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹75</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹125</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹75</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -204,7 +250,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Dual Outdoor Solar Light</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -212,15 +259,17 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Plasma Lighter</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹350</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹75</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹275</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹75</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹275</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/03/41nERJe0mhL._SX342_SY445_QL70_FMwebp_.webp" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">3d crystal ball night lamp</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">3D Crystal Ball Night Lamp</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹72</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹128</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹72</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹128</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -231,9 +280,10 @@
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71Q2Smvs1RL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">6 Blade 2 USB juicer Electrical</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">6 Blade 2 USB Juicer</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹350</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹175</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹175</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹175</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹175</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -242,7 +292,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">PORTABLE JUICER BLENDER</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -251,7 +302,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Aluminum Fruit Press Juicer</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -259,7 +311,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Mini Bottle Juicer</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹300</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹165</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹135</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹165</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹135</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -268,7 +321,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Automatic Citrus Press Juicer</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -277,7 +331,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Scarlet Beater (260 W)</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -285,7 +340,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Coffee Beater</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹150</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹45</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹105</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹45</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹105</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -294,7 +350,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Hand Mixi</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black">—</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -302,23 +359,26 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Electric Coffee Grinder</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹450</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹265</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹185</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹265</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹185</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/01/612IgimUC3L._SL1085_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Nima electric grinder</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Nima Electric Grinder</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹400</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹230</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹170</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹230</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹170</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2026/02/H4e81c477ecdb4ff69a9d855321f0217ad.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">PORTABLE BLENDER WITH CUP</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Portable Blender with Cup</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹350</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹215</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹135</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹215</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹135</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -331,7 +391,9 @@
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/619yWdi4nbS._SL1500_-Copy.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Diamond Water Bottle (3 PIS)</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -339,7 +401,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Motivational Time Water Bottle</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹300</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹95</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹205</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹95</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹205</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -347,7 +410,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">LED Temperature Display Bottle</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹400</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹120</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹280</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹120</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹280</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -355,15 +419,18 @@
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61xCUFWTINL._SL1037_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Penguin Shape Water Bottle</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61RnDFDR89L._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
-                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Motivational Water Bottle (Set of 3)</h3>
+                        <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Motivational Bottle (Set of 3)</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹450</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹200</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹250</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹200</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹250</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -371,7 +438,9 @@
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61AnQAPAdtL._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Mist Spray Water Bottle</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -379,7 +448,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Nice Water Bottle 400ml</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹100</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹35</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹65</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹35</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹65</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -387,7 +457,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Transparent Motivational Bottles</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹300</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹105</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹195</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹105</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹195</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -395,7 +466,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Vacuum Flask Set with 3 Cups</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹450</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹175</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹275</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹175</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹275</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -403,7 +475,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Printed Water Bottle (3 pcs)</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹250</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹80</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹170</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹80</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹170</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -411,7 +484,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Transp Motivational Bottles (3pc)</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹400</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹175</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹225</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹175</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹225</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -419,7 +493,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Pro Shaker Bottle</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹150</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹68</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹82</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹68</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹82</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -427,7 +502,9 @@
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2025/04/31crX8inTFL._SY300_SX300_QL70_FMwebp_.webp" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Square Shape Bottle (3pc)</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -435,7 +512,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Tumbler with Handle Straw</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹500</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹275</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹225</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹275</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹225</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -443,7 +521,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Ice Cream Bottle Mug</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹250</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹100</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹150</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹100</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹150</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -451,7 +530,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Rassi Water Bottle</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹300</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹140</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹160</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹140</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹160</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -459,7 +539,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">6pcs Steel Cap Diamond Bottle</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹600</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹300</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹300</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹300</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹300</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -467,7 +548,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Plastic Nice Water Bottle</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹100</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹30</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹70</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹30</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹70</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -475,7 +557,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Rabbit Glass Water Bottle</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹100</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹50</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹50</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹50</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹50</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -488,7 +571,9 @@
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/61RuCKB0iS._SL1500_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">2 IN 1 SWEEPER MOP</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -496,7 +581,9 @@
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/51uGeip-VRL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">MICRO FIBER FLAT MOP</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -504,7 +591,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Fan Cleaning Mop</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹85</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹115</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹85</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹115</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -512,7 +600,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">MICROFIBER CLEANING MOP</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹75</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹125</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹75</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹125</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -520,7 +609,9 @@
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/616tQ9h7rkL.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Triangle Mop Road</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -528,7 +619,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">2 in 1 Tiles Cleaning Brush</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹150</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹55</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹95</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹55</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹95</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -536,7 +628,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">3 in 1 Tiles Cleaning Brush</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹200</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹60</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹140</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹60</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹140</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -544,7 +637,9 @@
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/WhatsApp-Image-2024-03-26-at-16.34.26_b28e5f42.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Floor Cleaning Squeeze Mop</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -552,7 +647,9 @@
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/612fo91O1QL._SX569_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Portable Mini Mop</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -560,7 +657,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">2-in-1 Mesh Brush Wiper</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹140</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹40</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹100</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹40</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹100</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -568,7 +666,9 @@
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/71RCEV7XnkL._SX679_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">360° Triangle Mop</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -576,7 +676,9 @@
                     <div class="img-container aspect-square"><img src="https://ashoppervillage.com/wp-content/uploads/2024/09/31cceDTEkEL._SX679_.jpg" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Spray Mop</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -584,7 +686,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Twist Mop</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹100</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹100</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -592,7 +695,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">SLIM FLOOR WIPER</h3>
                         <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹70</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹70</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -605,7 +709,9 @@
                     <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Nicer+Dicer" class="w-full h-full object-contain p-2"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">5 In 1 Nicer Dicer Chopper</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -613,7 +719,9 @@
                     <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Wet+Chopper" class="w-full h-full object-contain p-2"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">WET CHOPPER</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -621,7 +729,9 @@
                     <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Chopping+Board" class="w-full h-full object-contain p-2"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Cut And Wash Chopping Board</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -629,7 +739,9 @@
                     <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Apple+Cutter" class="w-full h-full object-contain p-2"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">STEEL APPLE CUTTER</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -637,7 +749,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Dry Fruit Slicer</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹100</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹35</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹65</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹35</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹65</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card stock-out">
@@ -645,7 +758,9 @@
                     <div class="img-container aspect-square"><img src="https://placehold.co/400x400/F8FAFC/94A3B8?text=Knife+Peeler" class="w-full h-full object-contain p-2"></div>
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">2 in 1 knife and peeler</h3>
-                        <div class="flex items-end justify-between mt-2"><span class="text-lg font-black">—</span></div>
+                        <div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black">—</span></div>
+                        <div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>
                     </div>
                 </div>
                 <div class="product-card">
@@ -653,7 +768,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Portable Hand Saw For Wood</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹50</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹20</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹30</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹20</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹30</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -661,7 +777,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Electric Mini Garlic Chopper</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹300</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹130</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹170</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹130</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹170</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -669,7 +786,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">4 in 1 Portable Veg Cutter</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹400</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹210</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹190</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹210</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹190</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -677,7 +795,8 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">4-pcs knife & Scissor set</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹400</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹190</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹210</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹190</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹210</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
                 <div class="product-card">
@@ -685,13 +804,47 @@
                     <div class="p-4 pt-3">
                         <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">Fruit & Vegetable Peeler</h3>
                         <div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹600</div>
-                        <div class="flex items-end justify-between"><span class="text-lg font-black text-blue-700">₹370</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹230</span></div>
+                        <div class="flex items-end justify-between mb-4"><span class="text-lg font-black text-blue-700">₹370</span><span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹230</span></div>
+                        <a href="https://chat.whatsapp.com/DcNjdIAk9NyDYymAikwXBV?mode=gi_t" target="_blank" class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl transition-colors shadow-sm shadow-blue-200">Buy Now</a>
                     </div>
                 </div>
             </div>
         </div>
-
     </main>
+
+    <div id="storyModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 transition-opacity">
+        <div class="bg-white rounded-[32px] p-8 md:p-10 max-w-md w-full relative shadow-2xl">
+            <button onclick="closeModal('storyModal')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-black text-blue-600 mb-6">Our Story</h3>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">Born in Belgaum, Banx Store was created with a simple mission: to bring smart, innovative, and premium home essentials directly to you at their true, original warehouse prices.</p>
+            <p class="text-sm text-slate-600 leading-relaxed">We cut out the middlemen so that upgrading your everyday lifestyle doesn't break the bank. Every single product is handpicked and quality-tested to ensure you get the absolute best value.</p>
+            <div class="mt-8 text-center text-xs font-bold text-slate-400 uppercase tracking-[0.2em] border-t border-slate-100 pt-6">Welcome to the family.</div>
+        </div>
+    </div>
+
+    <div id="gameModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 transition-opacity">
+        <div class="bg-white rounded-[32px] p-8 md:p-10 max-w-sm w-full relative shadow-2xl text-center">
+            <button onclick="closeModal('gameModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-black text-blue-600 mb-2">Play & Win</h3>
+            <p id="gameText" class="text-sm text-slate-500 mb-8 font-medium">Tap a mystery box to reveal a secret WhatsApp discount code!</p>
+            
+            <div id="boxesContainer" class="flex justify-center gap-4 mb-4">
+                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md">🎁</div>
+                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md" style="animation-delay: 0.1s">🎁</div>
+                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md" style="animation-delay: 0.2s">🎁</div>
+            </div>
+            
+            <div id="gameResult" class="hidden">
+                <div class="text-4xl font-black text-emerald-500 mb-4 tracking-tight" id="winCode">BANX10</div>
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-6">Take a screenshot & send it with your WhatsApp order!</p>
+                <button onclick="closeModal('gameModal')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs uppercase tracking-widest py-3 rounded-xl transition-colors">Awesome!</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         const tabsOrder = ['home', 'lighting', 'juicer', 'bottles', 'mops', 'kitchen'];
@@ -733,18 +886,82 @@
             navigateTo(0);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        
+        /* 3-Dot Menu Logic */
+        function toggleMenu() {
+            const menu = document.getElementById('dropdown-menu');
+            if(menu.classList.contains('menu-hidden')) {
+                menu.classList.remove('menu-hidden');
+                menu.classList.add('menu-visible');
+            } else {
+                menu.classList.add('menu-hidden');
+                menu.classList.remove('menu-visible');
+            }
+        }
+        
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('dropdown-menu');
+            const button = event.target.closest('button[onclick="toggleMenu()"]');
+            if (!button && !menu.contains(event.target)) {
+                menu.classList.add('menu-hidden');
+                menu.classList.remove('menu-visible');
+            }
+        });
 
-        // Touch Swipe Logic
+        /* Modal & Game Logic */
+        function openStory() {
+            document.getElementById('storyModal').classList.remove('hidden');
+            document.getElementById('storyModal').classList.add('flex');
+        }
+        
+        function openGame() {
+            document.getElementById('gameModal').classList.remove('hidden');
+            document.getElementById('gameModal').classList.add('flex');
+            
+            // Reset Game state
+            document.getElementById('boxesContainer').classList.remove('hidden');
+            document.getElementById('boxesContainer').classList.add('flex');
+            document.getElementById('gameResult').classList.add('hidden');
+            document.getElementById('gameText').innerText = "Tap a mystery box to reveal a secret WhatsApp discount code!";
+            
+            // Reset animation
+            const boxes = document.getElementById('boxesContainer').children;
+            for(let i=0; i<boxes.length; i++) {
+                boxes[i].classList.remove('box-pop');
+            }
+        }
+        
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
+        }
+        
+        function playGame(el) {
+            el.classList.add('box-pop'); // Add pop animation
+            
+            setTimeout(() => {
+                const codes = ["BANX10", "FREEDELIVERY", "FLAT50"];
+                const wonCode = codes[Math.floor(Math.random() * codes.length)];
+                
+                document.getElementById('boxesContainer').classList.add('hidden');
+                document.getElementById('boxesContainer').classList.remove('flex');
+                document.getElementById('gameResult').classList.remove('hidden');
+                document.getElementById('winCode').innerText = wonCode;
+                document.getElementById('gameText').innerText = "🎉 You Won! 🎉";
+            }, 300);
+        }
+
+        /* Touch Swipe Logic */
         let touchstartX = 0;
         let touchendX = 0;
 
         function checkDirection() {
             const swipeDistance = touchstartX - touchendX;
-            if (swipeDistance > 60) {
-                // Swiped Left -> Go to Next Tab
+            if (swipeDistance > 70) {
+                // Swiped Left -> Next
                 navigateTo(currentIndex + 1);
-            } else if (swipeDistance < -60) {
-                // Swiped Right -> Go to Prev Tab
+            } else if (swipeDistance < -70) {
+                // Swiped Right -> Prev
                 navigateTo(currentIndex - 1);
             }
         }
