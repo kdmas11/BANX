@@ -9,10 +9,10 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F8FAFC; color: #0F172A; overflow-x: hidden; }
         
-        /* Layout Fixes (Prevents Blank Spaces) */
+        /* Layout Fixes */
         .tab-content { display: none !important; opacity: 0; }
         .tab-content.active { display: block !important; animation: slideUp 0.4s ease forwards; }
-        #home.active { display: flex !important; } /* Home requires flex for vertical centering */
+        #home.active { display: flex !important; } 
         
         /* Subtle Highlight Nav Tabs */
         .tab-btn { transition: all 0.3s ease; }
@@ -23,7 +23,8 @@
         .product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border-color: #BFDBFE; }
         
         .stock-out { opacity: 0.6; filter: grayscale(1); }
-        .stock-out-badge { position: absolute; top: 1rem; right: 1rem; background: #EF4444; color: white; padding: 4px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; z-index: 10; text-transform: uppercase; }
+        /* Updated badge color for "Coming Soon" */
+        .stock-out-badge { position: absolute; top: 1rem; right: 1rem; background: #0F172A; color: white; padding: 4px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; z-index: 10; text-transform: uppercase; }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -42,13 +43,6 @@
         
         @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.2) rotate(-5deg); } 100% { transform: scale(0); opacity: 0; } }
         .box-pop { animation: pop 0.4s ease forwards; }
-
-        /* Custom Location Logo CSS Mask */
-        .custom-location-logo {
-            display: inline-block; width: 80px; height: 18px; vertical-align: middle; margin-top: -3px; background-color: currentColor; 
-            -webkit-mask-image: url('image_980a8e.jpg'); mask-image: url('image_980a8e.jpg');
-            -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: left center; mask-position: left center;
-        }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -106,7 +100,7 @@
                 Buy Now <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
             <div id="modalOosBtn" class="hidden w-full bg-slate-100 text-slate-400 font-black text-sm uppercase tracking-widest py-4 rounded-2xl text-center">
-                Out of Stock
+                Coming Soon
             </div>
         </div>
     </div>
@@ -120,7 +114,7 @@
             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Delivery Details</p>
 
             <div class="bg-emerald-50 border border-emerald-100 text-emerald-600 text-[10px] font-bold uppercase tracking-widest p-2 rounded-xl text-center mb-6">
-                🚚Free delivery below ₹399🚚
+                🚚 Note: Free delivery below ₹399
             </div>
             
             <div class="flex flex-col gap-4 mb-6">
@@ -151,7 +145,7 @@
         <div class="bg-white rounded-[32px] p-8 md:p-10 max-w-md w-full relative shadow-2xl">
             <button onclick="closeModal('storyModal')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             <h3 class="text-3xl font-black text-blue-600 mb-6">Our Story</h3>
-            <p class="text-sm text-slate-600 leading-relaxed mb-4">Born in <span class="custom-location-logo text-blue-600"></span>, Banx Store was created with a simple mission: to bring smart, innovative, and premium home essentials directly to you at their true, original warehouse prices.</p>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">Born in <span class="text-blue-600 font-bold">Belgaum</span>, Banx Store was created with a simple mission: to bring smart, innovative, and premium home essentials directly to you at their true, original warehouse prices.</p>
             <p class="text-sm text-slate-600 leading-relaxed">We cut out the middlemen so that upgrading your everyday lifestyle doesn't break the bank. Every single product is handpicked and quality-tested to ensure you get the absolute best value.</p>
             <div class="mt-8 text-center text-xs font-bold text-slate-400 uppercase tracking-[0.2em] border-t border-slate-100 pt-6">Welcome to the family.</div>
         </div>
@@ -181,13 +175,13 @@
         // Efficient Index-Based Data Structure
         const inventory = [
             // LIGHTING
-            { c: 'lighting', n: 'COB Rechargeable Keychain Light', p: 55, m: 200, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/41EofaexcXL._SL1000_.jpg', s: true, d: 'Ultra-bright, pocket-sized illumination. Features a built-in rechargeable battery, perfect for emergencies or everyday carry.' },
+            { c: 'lighting', n: 'COB Rechargeable Keychain Light', p: 99, m: 200, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/41EofaexcXL._SL1000_.jpg', s: true, d: 'Ultra-bright, pocket-sized illumination. Features a built-in rechargeable battery, perfect for emergencies or everyday carry.' },
             { c: 'lighting', n: 'Star Master', p: null, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/517APRHUfRL.jpg', s: false, d: 'Transform your room into a beautiful, relaxing starry night sky. Great for kids bedrooms.' },
-            { c: 'lighting', n: 'Solar Light 100 LED', p: 105, m: 250, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/51T3YlTrG3L.jpg', s: true, d: 'Energy-efficient outdoor security lighting. Features 100 ultra-bright LEDs and automatic motion detection.' },
+            { c: 'lighting', n: 'Solar Light 100 LED', p: 199, m: 250, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/51T3YlTrG3L.jpg', s: true, d: 'Energy-efficient outdoor security lighting. Features 100 ultra-bright LEDs and automatic motion detection.' },
             { c: 'lighting', n: 'USB LED Light', p: null, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/61NIlaxPFRL._SL1500_.jpg', s: false, d: 'Flexible and portable USB-powered light. Perfect for illuminating your laptop keyboard during late-night work.' },
             { c: 'lighting', n: '20 LED Solar Motion Sensor', p: null, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/41J7xksNPwS.jpg', s: false, d: 'Compact solar-powered wall light with a built-in motion sensor. Eco-friendly way to light up your front porch.' },
-            { c: 'lighting', n: '3D Moon Lamp', p: 200, m: 350, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/61wzBKobVLL._SL1100_.jpg', s: true, d: 'A stunning, textured 3D replica of the moon. Emits a soft, warm glow to create a magical atmosphere.' },
-            { c: 'lighting', n: 'Solar Wall Lamp', p: 108, m: 250, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/61JeHh037UL._SX679_.jpg', s: true, d: 'Elegant, wire-free solar wall lamp. Automatically charges during the day and provides reliable illumination all night.' },
+            { c: 'lighting', n: '3D Moon Lamp', p: 299, m: 350, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/61wzBKobVLL._SL1100_.jpg', s: true, d: 'A stunning, textured 3D replica of the moon. Emits a soft, warm glow to create a magical atmosphere.' },
+            { c: 'lighting', n: 'Solar Wall Lamp', p: 199, m: 250, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/61JeHh037UL._SX679_.jpg', s: true, d: 'Elegant, wire-free solar wall lamp. Automatically charges during the day and provides reliable illumination all night.' },
             { c: 'lighting', n: 'Camping Hanging Bulb', p: null, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/71YBU22yw0L._SX522_.jpg', s: false, d: 'Durable, battery-powered hanging bulb. The perfect companion for illuminating your tent or outdoor campsite.' },
             { c: 'lighting', n: 'Solar Deck Lights (4PCS)', p: 125, m: 200, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/71XfE2lBxS._SX569_.jpg', s: true, d: 'A set of 4 sleek, low-profile solar lights. Easily mount them on stairs, fences, or decks for premium outdoor aesthetics.' },
             { c: 'lighting', n: 'Dual Outdoor Solar Light', p: null, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2025/02/ASV-338-1.jpg', s: false, d: 'Double the brightness with dual adjustable heads. Offers wide-angle illumination powered entirely by the sun.' },
@@ -272,14 +266,14 @@
             { c: 'hooks', n: 'Long Hook Gold', p: 3.5, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2025/09/71MgcIop4HL._SL1500_-1.jpg', s: true, d: 'Elegant gold-finished adhesive hook. Adds modern luxury to your bathroom.' },
             { c: 'hooks', n: 'PHOTO FRAME HOOK', p: 3, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2025/09/51zv0NBxhNL._SX569_.jpg', s: true, d: 'Non-damaging adhesive hooks that make hanging photo frames a breeze.' },
             { c: 'hooks', n: 'Decorative Wall Hooks', p: 3, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2025/12/WhatsApp-Image-2025-11-28-at-11.28.41_056da5ac.jpg', s: true, d: 'Cute adhesive hooks featuring charming fruit and flower designs.' },
-            { c: 'hooks', n: 'Transparent Long Hook', p: 3, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2025/12/71awHue2M3L._SX522_.jpg', s: true, d: 'Invisible adhesive hook providing deep hanger space seamlessly on walls.' },
+            { c: 'hooks', n: 'Transparent Long Hook set of 10', p: 99, m: 1150, i: 'https://ashoppervillage.com/wp-content/uploads/2025/12/71awHue2M3L._SX522_.jpg', s: true, d: 'Invisible adhesive hook providing deep hanger space seamlessly on walls.' },
 
             // COVERS
             { c: 'covers', n: 'Rain Bag Cover', p: null, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/51nVokMcFwL._SL1080_.jpg', s: false, d: 'Protect backpack from heavy monsoons. Elastic edge fits standard daypacks.' },
-            { c: 'covers', n: 'Food Cover (100 Pcs)', p: 26, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/71tNSR-GG0S._SL1412_.jpg', s: true, d: 'Say goodbye to foil. Elastic plastic covers stretch over bowls to keep leftovers fresh.' },
-            { c: 'covers', n: 'AC Cover (1.5/2 Ton)', p: 55, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/41ANnj2I6iL.jpg', s: true, d: 'Preserve split AC unit during off-season. Guards against dust and water.' },
-            { c: 'covers', n: 'Chair Leg Cover', p: null, m: null, i: 'https://placehold.co/400x400/F8FAFC/94A3B8?text=Chair+Cover', s: false, d: 'Soft silicone leg covers to stop chairs from scratching your beautiful floors.' },
-            { c: 'covers', n: 'Silicon Shoe Cover', p: 68, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/515uFjaB8yL._SL1200_.jpg', s: true, d: 'Slip reusable silicone covers over sneakers to keep them clean in mud and rain.' },
+            { c: 'covers', n: 'Food Cover (100 Pcs)', p: 199, m: 250, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/71tNSR-GG0S._SL1412_.jpg', s: true, d: 'Say goodbye to foil. Elastic plastic covers stretch over bowls to keep leftovers fresh.' },
+            { c: 'covers', n: 'AC Cover (1.5/2 Ton)', p: 199, m: 250, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/41ANnj2I6iL.jpg', s: true, d: 'Preserve split AC unit during off-season. Guards against dust and water.' },
+            { c: 'covers', n: 'Chair Leg Cover (1 Pis) White', p: null, m: null, i: 'https://placehold.co/400x400/F8FAFC/94A3B8?text=Chair+Cover', s: false, d: 'Soft silicone leg covers to stop chairs from scratching your beautiful floors.' },
+            { c: 'covers', n: 'Silicon Shoe Cover', p: 149, m: 250, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/515uFjaB8yL._SL1200_.jpg', s: true, d: 'Slip reusable silicone covers over sneakers to keep them clean in mud and rain.' },
             { c: 'covers', n: 'AC Cover (1 Ton)', p: null, m: null, i: 'https://placehold.co/400x400/F8FAFC/94A3B8?text=AC+Cover', s: false, d: 'Extend the life of your 1-Ton AC by blocking winter dust and debris.' },
             { c: 'covers', n: 'Refrigerator Cover', p: 50, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/51jlRNsMy3L.jpg', s: true, d: 'Keep top of fridge spotless. Includes side pockets for storing kitchen accessories.' },
             { c: 'covers', n: 'Washing Machine Cover', p: 97, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/517j6mCgznL.jpg', s: true, d: 'Protect washing machine from water splashes and dust with this heavy-duty zip cover.' },
@@ -323,12 +317,12 @@
                                 <p class="text-slate-700 text-sm md:text-lg font-extrabold uppercase tracking-widest">At its original price</p>
                                 <div class="swipe-hint text-blue-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></div>
                             </div>
-                            <div class="mt-2 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs font-black uppercase tracking-widest py-2 px-6 rounded-full">🚚 Free Delivery Below ₹399🚚</div>
+                            <div class="mt-2 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs font-black uppercase tracking-widest py-2 px-6 rounded-full">🚚 Note: Free Delivery Below ₹399</div>
                         </div>
                     </div>
                     <div class="mt-20 md:absolute md:bottom-0 text-center w-full">
                         <p class="text-[10px] md:text-xs font-bold text-slate-400 tracking-[0.3em] uppercase flex items-center justify-center gap-1.5">
-                            Made with <span class="text-red-500 animate-pulse text-sm">❤️</span> from <span class="custom-location-logo text-slate-400"></span>
+                            Made with <span class="text-red-500 animate-pulse text-sm">❤️</span> from <span class="text-blue-600 font-black">Belgaum</span>
                         </p>
                     </div>
                 </div>`;
@@ -338,24 +332,28 @@
             categories.forEach(cat => {
                 let gridHTML = `<div id="${cat}" class="tab-content pb-10"><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">`;
                 
-                inventory.forEach((p, index) => {
-                    if(p.c !== cat) return;
-                    
+                // Keep original index for referencing, then filter and sort (Available first)
+                const catProducts = inventory
+                    .map((p, index) => ({...p, originalIndex: index}))
+                    .filter(p => p.c === cat)
+                    .sort((a, b) => (a.s === b.s ? 0 : a.s ? -1 : 1));
+                
+                catProducts.forEach(p => {
                     const isOOS = !p.s;
                     const priceStr = isOOS ? '—' : `₹${p.p}`;
                     const mrpStr = p.m && !isOOS ? `<div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹${p.m}</div>` : `<div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>`;
                     const saveStr = p.m && !isOOS ? `<span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹${p.m - p.p}</span>` : '';
-                    const badge = isOOS ? `<div class="stock-out-badge">Stock Out</div>` : '';
+                    const badge = isOOS ? `<div class="stock-out-badge bg-slate-800">Coming Soon</div>` : '';
                     
                     gridHTML += `
-                    <div class="product-card ${isOOS ? 'stock-out' : ''}" onclick="showProduct(${index}, event)">
+                    <div class="product-card ${isOOS ? 'stock-out' : ''}" onclick="showProduct(${p.originalIndex}, event)">
                         ${badge}
                         <div class="img-container aspect-square"><img src="${p.i}" loading="lazy" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
                         <div class="p-4 pt-3 flex flex-col flex-grow">
                             <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">${p.n}</h3>
                             ${mrpStr}
                             <div class="flex items-end justify-between mb-4"><span class="text-lg font-black ${isOOS ? 'text-slate-800' : 'text-blue-700'}">${priceStr}</span>${saveStr}</div>
-                            ${isOOS ? `<div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>` : `<button class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 transition-colors text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl shadow-sm">Buy Now</button>`}
+                            ${isOOS ? `<div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Coming Soon</div>` : `<button class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 transition-colors text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl shadow-sm">Buy Now</button>`}
                         </div>
                     </div>`;
                 });
@@ -423,6 +421,7 @@
                 document.getElementById('modalBuyBtn').classList.add('hidden');
                 document.getElementById('modalBuyBtn').classList.remove('flex');
                 document.getElementById('modalOosBtn').classList.remove('hidden');
+                document.getElementById('modalOosBtn').innerText = 'Coming Soon'; // Updated
                 document.getElementById('modalPrice').innerText = '—';
                 document.getElementById('modalMrp').innerText = '';
             } else {
