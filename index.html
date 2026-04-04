@@ -9,13 +9,19 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F8FAFC; color: #0F172A; overflow-x: hidden; }
         
-        /* Transitions & Animations */
-        .tab-content { display: none; opacity: 0; }
-        .tab-content.active { display: flex; flex-direction: column; animation: slideUp 0.4s ease forwards; }
+        /* Layout Fixes (Prevents Blank Spaces) */
+        .tab-content { display: none !important; opacity: 0; }
+        .tab-content.active { display: block !important; animation: slideUp 0.4s ease forwards; }
+        #home.active { display: flex !important; } /* Home requires flex for vertical centering */
+        
+        /* Subtle Highlight Nav Tabs */
         .tab-btn { transition: all 0.3s ease; }
         .tab-btn.active { background-color: #EFF6FF; color: #2563EB; } 
+        
+        /* Product Card Styles */
         .product-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; transition: transform 0.2s; position: relative; display: flex; flex-direction: column; cursor: pointer; }
         .product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border-color: #BFDBFE; }
+        
         .stock-out { opacity: 0.6; filter: grayscale(1); }
         .stock-out-badge { position: absolute; top: 1rem; right: 1rem; background: #EF4444; color: white; padding: 4px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; z-index: 10; text-transform: uppercase; }
         
@@ -23,15 +29,18 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Glitter Text Animation */
         @keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-        @keyframes swipeHint { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(8px); } }
-        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.2) rotate(-5deg); } 100% { transform: scale(0); opacity: 0; } }
-
         .glitter-text {
             background: linear-gradient(to right, #2563EB 20%, #06B6D4 30%, #8B5CF6 40%, #2563EB 50%, #06B6D4 60%, #8B5CF6 70%, #2563EB 80%);
             background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: shimmer 4s linear infinite;
         }
+
+        @keyframes swipeHint { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(8px); } }
         .swipe-hint { animation: swipeHint 1.5s infinite ease-in-out; display: inline-flex; align-items: center; }
+        
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.2) rotate(-5deg); } 100% { transform: scale(0); opacity: 0; } }
         .box-pop { animation: pop 0.4s ease forwards; }
 
         /* Custom Location Logo CSS Mask */
@@ -44,6 +53,7 @@
 </head>
 <body class="p-4 md:p-8">
 
+    <!-- HEADER -->
     <header class="max-w-7xl mx-auto mb-8 border-b border-slate-200 pb-6 flex flex-col md:flex-row justify-between items-center gap-6 sticky top-0 bg-[#F8FAFC]/90 backdrop-blur-md z-40">
         <div class="flex justify-between items-center w-full md:w-auto relative">
             <div class="text-left pt-2 md:pt-0">
@@ -52,44 +62,66 @@
                 </h1>
                 <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">For the people who love living</p>
             </div>
+            
             <button onclick="toggleMenu()" class="p-2 text-slate-400 hover:text-blue-600 transition-colors focus:outline-none">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
             </button>
+
             <div id="dropdown-menu" class="opacity-0 scale-95 pointer-events-none absolute top-12 right-0 mt-2 w-48 bg-white/95 backdrop-blur-xl border border-slate-100 shadow-xl rounded-2xl z-50 overflow-hidden transition-all origin-top-right">
                 <div class="flex flex-col p-2">
-                    <button onclick="openStory(); toggleMenu()" class="text-left px-4 py-3 text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl">📖 Our Story</button>
-                    <button onclick="openGame(); toggleMenu()" class="text-left px-4 py-3 text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl">🎮 Play & Win</button>
+                    <button onclick="openStory(); toggleMenu()" class="text-left px-4 py-3 text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors">📖 Our Story</button>
+                    <button onclick="openGame(); toggleMenu()" class="text-left px-4 py-3 text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors">🎮 Play & Win</button>
                 </div>
             </div>
         </div>
         
-        <nav id="inventory-nav" class="flex space-x-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 no-scrollbar scroll-smooth items-center">
-            </nav>
+        <!-- Navigation Tabs (Injected via JS) -->
+        <nav id="inventory-nav" class="flex space-x-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 no-scrollbar scroll-smooth items-center"></nav>
     </header>
 
-    <main id="main-content" class="max-w-7xl mx-auto touch-pan-y min-h-[70vh] pb-10 relative">
-        </main>
+    <!-- DYNAMIC MAIN CONTENT -->
+    <main id="main-content" class="max-w-7xl mx-auto touch-pan-y min-h-[70vh] pb-10 relative"></main>
 
+    <!-- ================= MODALS ================= -->
+    
+    <!-- PRODUCT DETAILS MODAL -->
     <div id="productModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 transition-opacity">
         <div class="bg-white rounded-[32px] p-6 md:p-8 max-w-sm w-full relative shadow-2xl flex flex-col max-h-[90vh]">
-            <button onclick="closeModal('productModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 z-10 bg-white/80 rounded-full p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            <div class="bg-slate-50 rounded-2xl p-4 flex justify-center items-center mb-6"><img id="modalImg" src="" class="w-48 h-48 object-contain drop-shadow-md mix-blend-multiply"></div>
+            <button onclick="closeModal('productModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 z-10 bg-white/80 rounded-full p-1 backdrop-blur-sm"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            
+            <div class="bg-slate-50 rounded-2xl p-4 flex justify-center items-center mb-6 relative">
+                <img id="modalImg" src="" class="w-48 h-48 object-contain drop-shadow-md mix-blend-multiply">
+            </div>
+            
             <div class="overflow-y-auto no-scrollbar flex-grow mb-6">
                 <h3 id="modalTitle" class="text-2xl font-black text-slate-800 leading-tight mb-2"></h3>
-                <div class="flex items-end gap-3 mb-4"><span id="modalPrice" class="text-3xl font-black text-blue-600"></span><span id="modalMrp" class="text-sm font-bold text-slate-400 line-through pb-1"></span></div>
+                <div class="flex items-end gap-3 mb-4">
+                    <span id="modalPrice" class="text-3xl font-black text-blue-600"></span>
+                    <span id="modalMrp" class="text-sm font-bold text-slate-400 line-through pb-1"></span>
+                </div>
                 <p id="modalDesc" class="text-sm text-slate-600 leading-relaxed font-medium"></p>
             </div>
-            <button id="modalBuyBtn" onclick="openCheckout()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black text-sm uppercase tracking-widest py-4 rounded-2xl shadow-lg shadow-blue-200 flex justify-center items-center gap-2">Buy Now <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
-            <div id="modalOosBtn" class="hidden w-full bg-slate-100 text-slate-400 font-black text-sm uppercase tracking-widest py-4 rounded-2xl text-center">Out of Stock</div>
+            
+            <button id="modalBuyBtn" onclick="openCheckout()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black text-sm uppercase tracking-widest py-4 rounded-2xl transition-colors shadow-lg shadow-blue-200 text-center flex justify-center items-center gap-2">
+                Buy Now <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </button>
+            <div id="modalOosBtn" class="hidden w-full bg-slate-100 text-slate-400 font-black text-sm uppercase tracking-widest py-4 rounded-2xl text-center">
+                Out of Stock
+            </div>
         </div>
     </div>
 
+    <!-- CHECKOUT MODAL -->
     <div id="checkoutModal" class="fixed inset-0 z-[110] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 transition-opacity">
         <div class="bg-white rounded-[32px] p-6 md:p-8 max-w-sm w-full relative shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto no-scrollbar">
             <button onclick="closeModal('checkoutModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 z-10 bg-white/80 rounded-full p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            
             <h3 class="text-2xl font-black text-blue-600 mb-1">Checkout</h3>
             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Delivery Details</p>
-            <div class="bg-emerald-50 border border-emerald-100 text-emerald-600 text-[10px] font-bold uppercase tracking-widest p-2 rounded-xl text-center mb-6">🚚Free delivery below ₹399🚚</div>
+
+            <div class="bg-emerald-50 border border-emerald-100 text-emerald-600 text-[10px] font-bold uppercase tracking-widest p-2 rounded-xl text-center mb-6">
+                🚚 Note: Free delivery below ₹399
+            </div>
             
             <div class="flex flex-col gap-4 mb-6">
                 <input type="text" id="custName" placeholder="Full Name" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-blue-500">
@@ -99,17 +131,22 @@
                     <input type="tel" id="custPhone" placeholder="Phone Number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-blue-500">
                 </div>
             </div>
+
             <label class="flex items-start gap-3 cursor-pointer mb-6 group">
                 <div class="relative flex items-center justify-center mt-0.5">
-                    <input type="checkbox" id="acceptTerms" class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded-md checked:bg-blue-600 transition-colors">
+                    <input type="checkbox" id="acceptTerms" class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded-md checked:bg-blue-600 checked:border-blue-600 transition-colors cursor-pointer">
                     <svg class="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
                 </div>
-                <span class="text-xs font-medium text-slate-500 leading-tight">I confirm these details are correct and accept the purchase.</span>
+                <span class="text-xs font-medium text-slate-500 leading-tight">I confirm these details are correct and accept the purchase of this product.</span>
             </label>
-            <button onclick="finalSubmit()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm uppercase tracking-widest py-4 rounded-2xl shadow-lg shadow-emerald-200">Confirm Order</button>
+
+            <button onclick="finalSubmit()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm uppercase tracking-widest py-4 rounded-2xl shadow-lg shadow-emerald-200 text-center">
+                Confirm Order
+            </button>
         </div>
     </div>
 
+    <!-- STORY MODAL -->
     <div id="storyModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white rounded-[32px] p-8 md:p-10 max-w-md w-full relative shadow-2xl">
             <button onclick="closeModal('storyModal')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
@@ -120,26 +157,28 @@
         </div>
     </div>
 
+    <!-- GAME MODAL -->
     <div id="gameModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white rounded-[32px] p-8 md:p-10 max-w-sm w-full relative shadow-2xl text-center">
             <button onclick="closeModal('gameModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             <h3 class="text-3xl font-black text-blue-600 mb-2">Play & Win</h3>
             <p id="gameText" class="text-sm text-slate-500 mb-8 font-medium">Tap a mystery box to reveal a secret WhatsApp discount code!</p>
             <div id="boxesContainer" class="flex justify-center gap-4 mb-4">
-                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 transition-all drop-shadow-md">🎁</div>
-                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 transition-all drop-shadow-md">🎁</div>
-                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 transition-all drop-shadow-md">🎁</div>
+                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md">🎁</div>
+                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md" style="animation-delay: 0.1s">🎁</div>
+                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md" style="animation-delay: 0.2s">🎁</div>
             </div>
             <div id="gameResult" class="hidden">
                 <div class="text-4xl font-black text-emerald-500 mb-4 tracking-tight" id="winCode">BANX10</div>
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-6">Screenshot & send with your WhatsApp order!</p>
-                <button onclick="closeModal('gameModal')" class="w-full bg-slate-100 text-slate-700 font-bold text-xs uppercase tracking-widest py-3 rounded-xl">Awesome!</button>
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-6">Take a screenshot & send it with your WhatsApp order!</p>
+                <button onclick="closeModal('gameModal')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs uppercase tracking-widest py-3 rounded-xl transition-colors">Awesome!</button>
             </div>
         </div>
     </div>
 
+    <!-- MAIN JAVASCRIPT: DATA & LOGIC -->
     <script>
-        // Efficient Data Structure for All Products
+        // Efficient Index-Based Data Structure
         const inventory = [
             // LIGHTING
             { c: 'lighting', n: 'COB Rechargeable Keychain Light', p: 55, m: 200, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/41EofaexcXL._SL1000_.jpg', s: true, d: 'Ultra-bright, pocket-sized illumination. Features a built-in rechargeable battery, perfect for emergencies or everyday carry.' },
@@ -215,7 +254,7 @@
             { c: 'kitchen', n: 'Portable Hand Saw', p: 20, m: 50, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/51xYCuQyHoL._SX679_.jpg', s: true, d: 'Lightweight, ultra-sharp wire hand saw for small wood projects or survival kits.' },
             { c: 'kitchen', n: 'Electric Garlic Chopper', p: 130, m: 300, i: 'https://ashoppervillage.com/wp-content/uploads/2025/02/ASV-345-1.jpg', s: true, d: 'Mince garlic, ginger, and chili peppers into fine paste with a button push.' },
             { c: 'kitchen', n: '4 in 1 Veg Cutter', p: 210, m: 400, i: 'https://ashoppervillage.com/wp-content/uploads/2025/12/71jxuYiBX-L._SX569_.jpg', s: true, d: 'Electric handheld cutter. Directly slice veggies straight into the pot while cooking!' },
-            { c: 'kitchen', n: '4-pcs Knife Set', p: 190, m: 400, i: 'https://ashoppervillage.com/wp-content/uploads/2026/01/51XZUezdaL.jpg', s: true, d: 'Includes a chef\'s knife, utility knife, kitchen scissors, and a chopping board.' },
+            { c: 'kitchen', n: '4-pcs Knife Set', p: 190, m: 400, i: 'https://ashoppervillage.com/wp-content/uploads/2026/01/51XZUezdaL.jpg', s: true, d: 'Includes a chef knife, utility knife, kitchen scissors, and a chopping board.' },
             { c: 'kitchen', n: 'Fruit & Veg Peeler', p: 370, m: 600, i: 'https://ashoppervillage.com/wp-content/uploads/2026/03/61bUpWYWBJL._SL1000_.jpg', s: true, d: 'Premium rotary peeler. Quickly strip skin off apples and potatoes smoothly.' },
 
             // HOOKS
@@ -260,7 +299,7 @@
             const nav = document.getElementById('inventory-nav');
             const main = document.getElementById('main-content');
             
-            // Build Nav Buttons
+            // Generate Nav Buttons
             let navHTML = '';
             for(let i=1; i<tabsOrder.length; i++) {
                 const tab = tabsOrder[i];
@@ -268,7 +307,7 @@
             }
             nav.innerHTML = navHTML;
 
-            // Build Main Content (Home + Categories)
+            // Build Main Content Structure
             let mainHTML = `
                 <div id="home" class="tab-content active h-full flex flex-col justify-center items-center mt-6 md:mt-16 relative min-h-[60vh]">
                     <div class="text-center px-4 flex-grow flex flex-col justify-center items-center">
@@ -284,7 +323,7 @@
                                 <p class="text-slate-700 text-sm md:text-lg font-extrabold uppercase tracking-widest">At its original price</p>
                                 <div class="swipe-hint text-blue-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></div>
                             </div>
-                            <div class="mt-2 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs font-black uppercase tracking-widest py-2 px-6 rounded-full">🚚Free Delivery Below ₹399🚚</div>
+                            <div class="mt-2 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs font-black uppercase tracking-widest py-2 px-6 rounded-full">🚚 Note: Free Delivery Below ₹399</div>
                         </div>
                     </div>
                     <div class="mt-20 md:absolute md:bottom-0 text-center w-full">
@@ -294,13 +333,14 @@
                     </div>
                 </div>`;
 
-            // Build Category Grids dynamically
+            // Build Category Grids
             const categories = [...new Set(inventory.map(p => p.c))];
             categories.forEach(cat => {
-                const catProducts = inventory.filter(p => p.c === cat);
-                let gridHTML = `<div id="${cat}" class="tab-content"><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">`;
+                let gridHTML = `<div id="${cat}" class="tab-content pb-10"><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">`;
                 
-                catProducts.forEach(p => {
+                inventory.forEach((p, index) => {
+                    if(p.c !== cat) return;
+                    
                     const isOOS = !p.s;
                     const priceStr = isOOS ? '—' : `₹${p.p}`;
                     const mrpStr = p.m && !isOOS ? `<div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹${p.m}</div>` : `<div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>`;
@@ -308,14 +348,14 @@
                     const badge = isOOS ? `<div class="stock-out-badge">Stock Out</div>` : '';
                     
                     gridHTML += `
-                    <div class="product-card ${isOOS ? 'stock-out' : ''}" onclick="showProduct('${p.n.replace(/'/g, "\\'")}', '${priceStr}', '${p.m}', '${p.i}', '${isOOS ? 'Stock Out' : 'In Stock'}', '${p.d.replace(/'/g, "\\'")}')">
+                    <div class="product-card ${isOOS ? 'stock-out' : ''}" onclick="showProduct(${index}, event)">
                         ${badge}
-                        <div class="img-container aspect-square"><img src="${p.i}" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
-                        <div class="p-4 pt-3">
+                        <div class="img-container aspect-square"><img src="${p.i}" loading="lazy" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                        <div class="p-4 pt-3 flex flex-col flex-grow">
                             <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">${p.n}</h3>
                             ${mrpStr}
-                            <div class="flex items-end justify-between mb-2"><span class="text-lg font-black ${isOOS ? 'text-slate-800' : 'text-blue-700'}">${priceStr}</span>${saveStr}</div>
-                            ${isOOS ? `<div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>` : `<button class="mt-auto block w-full text-center bg-blue-600 text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl shadow-sm">Buy Now</button>`}
+                            <div class="flex items-end justify-between mb-4"><span class="text-lg font-black ${isOOS ? 'text-slate-800' : 'text-blue-700'}">${priceStr}</span>${saveStr}</div>
+                            ${isOOS ? `<div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Out of Stock</div>` : `<button class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 transition-colors text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl shadow-sm">Buy Now</button>`}
                         </div>
                     </div>`;
                 });
@@ -357,32 +397,40 @@
         }
         document.addEventListener('click', e => {
             const menu = document.getElementById('dropdown-menu');
-            if (!e.target.closest('button[onclick="toggleMenu()"]') && !menu.contains(e.target)) {
+            if (!e.target.closest('button[onclick="toggleMenu()"]') && !menu.contains(e.target) && menu) {
                 menu.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
             }
         });
 
         // MODALS
-        function showProduct(title, price, mrp, img, status, desc) {
-            if(event.target.tagName.toLowerCase() === 'button') {
-                activeProduct.name = title; activeProduct.price = price;
-                openCheckout(); return;
+        function showProduct(index, event) {
+            const p = inventory[index];
+            
+            // If Buy Now button was clicked directly on the card
+            if (event && event.target.tagName.toLowerCase() === 'button' && p.s) {
+                activeProduct.name = p.n; activeProduct.price = `₹${p.p}`;
+                openCheckout();
+                event.stopPropagation();
+                return;
             }
-            activeProduct.name = title; activeProduct.price = price;
-            document.getElementById('modalImg').src = img;
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalDesc').innerText = desc;
 
-            if(status === 'Stock Out') {
+            activeProduct.name = p.n; activeProduct.price = p.s ? `₹${p.p}` : '—';
+            document.getElementById('modalImg').src = p.i;
+            document.getElementById('modalTitle').innerText = p.n;
+            document.getElementById('modalDesc').innerText = p.d;
+
+            if(!p.s) {
                 document.getElementById('modalBuyBtn').classList.add('hidden');
+                document.getElementById('modalBuyBtn').classList.remove('flex');
                 document.getElementById('modalOosBtn').classList.remove('hidden');
                 document.getElementById('modalPrice').innerText = '—';
                 document.getElementById('modalMrp').innerText = '';
             } else {
                 document.getElementById('modalBuyBtn').classList.remove('hidden');
+                document.getElementById('modalBuyBtn').classList.add('flex');
                 document.getElementById('modalOosBtn').classList.add('hidden');
-                document.getElementById('modalPrice').innerText = price;
-                document.getElementById('modalMrp').innerText = (mrp && mrp !== 'null') ? 'MRP: ₹' + mrp : '';
+                document.getElementById('modalPrice').innerText = `₹${p.p}`;
+                document.getElementById('modalMrp').innerText = p.m ? `MRP: ₹${p.m}` : '';
             }
             document.getElementById('productModal').classList.remove('hidden');
             document.getElementById('productModal').classList.add('flex');
@@ -444,9 +492,9 @@
             else if (startX - endX < -70) navigateTo(currentIndex - 1);
         }, {passive:true});
 
-        // Start App
-        initApp();
+        // Initialize App on load
+        window.onload = initApp;
+
     </script>
 </body>
 </html>
-
