@@ -9,38 +9,35 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F8FAFC; color: #0F172A; overflow-x: hidden; }
         
-        /* Layout Fixes */
+        /* Layout & Tabs */
         .tab-content { display: none !important; opacity: 0; }
         .tab-content.active { display: block !important; animation: slideUp 0.4s ease forwards; }
         #home.active { display: flex !important; } 
-        
-        /* Subtle Highlight Nav Tabs */
         .tab-btn { transition: all 0.3s ease; }
         .tab-btn.active { background-color: #EFF6FF; color: #2563EB; } 
         
-        /* Product Card Styles */
+        /* Product Cards */
         .product-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; transition: transform 0.2s; position: relative; display: flex; flex-direction: column; cursor: pointer; }
         .product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border-color: #BFDBFE; }
-        
         .stock-out { opacity: 0.6; filter: grayscale(1); }
         .stock-out-badge { position: absolute; top: 1rem; right: 1rem; background: #0F172A; color: white; padding: 4px 12px; border-radius: 99px; font-size: 10px; font-weight: 800; z-index: 10; text-transform: uppercase; }
+        .img-container { background: #F1F5F9; display: flex; align-items: center; justify-content: center; position: relative; }
         
+        /* Utilities */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+        /* Animations */
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Glitter Text Animation */
         @keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+        @keyframes swipeHint { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(8px); } }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.2) rotate(-5deg); } 100% { transform: scale(0); opacity: 0; } }
+        
         .glitter-text {
             background: linear-gradient(to right, #2563EB 20%, #06B6D4 30%, #8B5CF6 40%, #2563EB 50%, #06B6D4 60%, #8B5CF6 70%, #2563EB 80%);
             background-size: 200% auto; color: transparent; -webkit-background-clip: text; background-clip: text; animation: shimmer 4s linear infinite;
         }
-
-        @keyframes swipeHint { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(8px); } }
         .swipe-hint { animation: swipeHint 1.5s infinite ease-in-out; display: inline-flex; align-items: center; }
-        
-        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.2) rotate(-5deg); } 100% { transform: scale(0); opacity: 0; } }
         .box-pop { animation: pop 0.4s ease forwards; }
     </style>
 </head>
@@ -50,25 +47,20 @@
     <header class="max-w-7xl mx-auto mb-8 border-b border-slate-200 pb-6 flex flex-col md:flex-row justify-between items-center gap-6 sticky top-0 bg-[#F8FAFC]/90 backdrop-blur-md z-40">
         <div class="flex justify-between items-center w-full md:w-auto relative">
             <div class="text-left pt-2 md:pt-0">
-                <h1 class="text-3xl font-black uppercase tracking-tighter cursor-pointer hover:opacity-80 transition-opacity" onclick="goHome()">
-                    Banx<span class="text-blue-600">.</span>
-                </h1>
+                <h1 class="text-3xl font-black uppercase tracking-tighter cursor-pointer hover:opacity-80 transition-opacity" onclick="goHome()">Banx<span class="text-blue-600">.</span></h1>
                 <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">For the people who love living</p>
             </div>
-            
-            <button onclick="toggleMenu()" class="p-2 text-slate-400 hover:text-blue-600 transition-colors focus:outline-none">
+            <button id="menu-toggle" class="p-2 text-slate-400 hover:text-blue-600 transition-colors focus:outline-none" onclick="toggleMenu()">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
             </button>
-
             <div id="dropdown-menu" class="opacity-0 scale-95 pointer-events-none absolute top-12 right-0 mt-2 w-48 bg-white/95 backdrop-blur-xl border border-slate-100 shadow-xl rounded-2xl z-50 overflow-hidden transition-all origin-top-right">
                 <div class="flex flex-col p-2">
-                    <button onclick="openStory(); toggleMenu()" class="text-left px-4 py-3 text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors">📖 Our Story</button>
-                    <button onclick="openGame(); toggleMenu()" class="text-left px-4 py-3 text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors">🎮 Play & Win</button>
+                    <button onclick="toggleModal('storyModal', true)" class="text-left px-4 py-3 text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors">📖 Our Story</button>
+                    <button onclick="openGame()" class="text-left px-4 py-3 text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors">🎮 Play & Win</button>
                 </div>
             </div>
         </div>
-        
-        <!-- Navigation Tabs (Injected via JS) -->
+        <!-- Dynamic Navigation Tabs -->
         <nav id="inventory-nav" class="flex space-x-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 no-scrollbar scroll-smooth items-center"></nav>
     </header>
 
@@ -80,12 +72,8 @@
     <!-- PRODUCT DETAILS MODAL -->
     <div id="productModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 transition-opacity">
         <div class="bg-white rounded-[32px] p-6 md:p-8 max-w-sm w-full relative shadow-2xl flex flex-col max-h-[90vh]">
-            <button onclick="closeModal('productModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 z-10 bg-white/80 rounded-full p-1 backdrop-blur-sm"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            
-            <div class="bg-slate-50 rounded-2xl p-4 flex justify-center items-center mb-6 relative">
-                <img id="modalImg" src="" class="w-48 h-48 object-contain drop-shadow-md mix-blend-multiply">
-            </div>
-            
+            <button onclick="toggleModal('productModal', false)" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 z-10 bg-white/80 rounded-full p-1 backdrop-blur-sm"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <div class="bg-slate-50 rounded-2xl p-4 flex justify-center items-center mb-6 relative"><img id="modalImg" src="" class="w-48 h-48 object-contain drop-shadow-md mix-blend-multiply"></div>
             <div class="overflow-y-auto no-scrollbar flex-grow mb-6">
                 <h3 id="modalTitle" class="text-2xl font-black text-slate-800 leading-tight mb-2"></h3>
                 <div class="flex items-end gap-3 mb-4">
@@ -94,28 +82,18 @@
                 </div>
                 <p id="modalDesc" class="text-sm text-slate-600 leading-relaxed font-medium"></p>
             </div>
-            
-            <button id="modalBuyBtn" onclick="openCheckout()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black text-sm uppercase tracking-widest py-4 rounded-2xl transition-colors shadow-lg shadow-blue-200 text-center flex justify-center items-center gap-2">
-                Buy Now <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-            </button>
-            <div id="modalOosBtn" class="hidden w-full bg-slate-100 text-slate-400 font-black text-sm uppercase tracking-widest py-4 rounded-2xl text-center">
-                Coming Soon
-            </div>
+            <button id="modalBuyBtn" onclick="openCheckout()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black text-sm uppercase tracking-widest py-4 rounded-2xl transition-colors shadow-lg shadow-blue-200 flex justify-center items-center gap-2">Buy Now <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+            <div id="modalOosBtn" class="hidden w-full bg-slate-100 text-slate-400 font-black text-sm uppercase tracking-widest py-4 rounded-2xl text-center">Coming Soon</div>
         </div>
     </div>
 
     <!-- CHECKOUT MODAL -->
     <div id="checkoutModal" class="fixed inset-0 z-[110] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 transition-opacity">
         <div class="bg-white rounded-[32px] p-6 md:p-8 max-w-sm w-full relative shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto no-scrollbar">
-            <button onclick="closeModal('checkoutModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 z-10 bg-white/80 rounded-full p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            
+            <button onclick="toggleModal('checkoutModal', false)" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800 z-10 bg-white/80 rounded-full p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             <h3 class="text-2xl font-black text-blue-600 mb-1">Checkout</h3>
             <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Delivery Details</p>
-
-            <div class="bg-emerald-50 border border-emerald-100 text-emerald-600 text-[10px] font-bold uppercase tracking-widest p-2 rounded-xl text-center mb-6">
-                🚚 Note: Free delivery below ₹399
-            </div>
-            
+            <div class="bg-emerald-50 border border-emerald-100 text-emerald-600 text-[10px] font-bold uppercase tracking-widest p-2 rounded-xl text-center mb-6">🚚 Note: Free delivery below ₹399</div>
             <div class="flex flex-col gap-4 mb-6">
                 <input type="text" id="custName" placeholder="Full Name" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-blue-500">
                 <textarea id="custAddress" placeholder="Complete Delivery Address" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-blue-500 resize-none"></textarea>
@@ -124,7 +102,6 @@
                     <input type="tel" id="custPhone" placeholder="Phone Number" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold outline-none focus:border-blue-500">
                 </div>
             </div>
-
             <label class="flex items-start gap-3 cursor-pointer mb-6 group">
                 <div class="relative flex items-center justify-center mt-0.5">
                     <input type="checkbox" id="acceptTerms" class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded-md checked:bg-blue-600 checked:border-blue-600 transition-colors cursor-pointer">
@@ -132,29 +109,22 @@
                 </div>
                 <span class="text-xs font-medium text-slate-500 leading-tight">I confirm these details are correct and accept the purchase of this product.</span>
             </label>
-
-            <button onclick="finalSubmit()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm uppercase tracking-widest py-4 rounded-2xl shadow-lg shadow-emerald-200 text-center">
-                Confirm Order
-            </button>
+            <button onclick="finalSubmit()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black text-sm uppercase tracking-widest py-4 rounded-2xl shadow-lg shadow-emerald-200 text-center">Confirm Order</button>
         </div>
     </div>
 
     <!-- STORY MODAL -->
     <div id="storyModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white rounded-[32px] p-8 md:p-10 max-w-md w-full relative shadow-2xl">
-            <button onclick="closeModal('storyModal')" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <button onclick="toggleModal('storyModal', false)" class="absolute top-6 right-6 text-slate-400 hover:text-slate-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             <h3 class="text-3xl font-black text-blue-600 mb-6">Our Story</h3>
-            
             <p class="text-sm text-slate-600 leading-relaxed mb-4 flex items-center flex-wrap">Born in 
                 <span class="inline-flex items-stretch align-middle text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400 -mt-1 mx-1">
                     <span class="font-black text-[1.2rem] md:text-[1.4rem] leading-[0.85] tracking-tighter">BELGA</span>
                     <span class="flex flex-col justify-between text-[0.35rem] md:text-[0.4rem] leading-[1] font-black ml-[2px] py-[1px] tracking-widest">
-                        <span class="block">VI</span>
-                        <span class="block">V</span>
-                        <span class="block tracking-normal">um</span>
+                        <span class="block">VI</span><span class="block">V</span><span class="block tracking-normal">um</span>
                     </span>
                 </span>, Banx Store was created with a simple mission: to bring smart, innovative, and premium home essentials directly to you at their true, original warehouse prices.</p>
-            
             <p class="text-sm text-slate-600 leading-relaxed">We cut out the middlemen so that upgrading your everyday lifestyle doesn't break the bank. Every single product is handpicked and quality-tested to ensure you get the absolute best value.</p>
             <div class="mt-8 text-center text-xs font-bold text-slate-400 uppercase tracking-[0.2em] border-t border-slate-100 pt-6">Welcome to the family.</div>
         </div>
@@ -163,18 +133,18 @@
     <!-- GAME MODAL -->
     <div id="gameModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white rounded-[32px] p-8 md:p-10 max-w-sm w-full relative shadow-2xl text-center">
-            <button onclick="closeModal('gameModal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <button onclick="toggleModal('gameModal', false)" class="absolute top-5 right-5 text-slate-400 hover:text-slate-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             <h3 class="text-3xl font-black text-blue-600 mb-2">Play & Win</h3>
             <p id="gameText" class="text-sm text-slate-500 mb-8 font-medium">Tap a mystery box to reveal a secret WhatsApp discount code!</p>
             <div id="boxesContainer" class="flex justify-center gap-4 mb-4">
-                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md">🎁</div>
-                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md" style="animation-delay: 0.1s">🎁</div>
-                <div onclick="playGame(this)" class="text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md" style="animation-delay: 0.2s">🎁</div>
+                <div class="game-box text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md" onclick="playGame(this)">🎁</div>
+                <div class="game-box text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md" style="animation-delay: 0.1s" onclick="playGame(this)">🎁</div>
+                <div class="game-box text-6xl cursor-pointer hover:scale-110 hover:-translate-y-2 transition-all drop-shadow-md" style="animation-delay: 0.2s" onclick="playGame(this)">🎁</div>
             </div>
             <div id="gameResult" class="hidden">
                 <div class="text-4xl font-black text-emerald-500 mb-4 tracking-tight" id="winCode">BANX10</div>
                 <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-6">Take a screenshot & send it with your WhatsApp order!</p>
-                <button onclick="closeModal('gameModal')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs uppercase tracking-widest py-3 rounded-xl transition-colors">Awesome!</button>
+                <button onclick="toggleModal('gameModal', false)" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs uppercase tracking-widest py-3 rounded-xl transition-colors">Awesome!</button>
             </div>
         </div>
     </div>
@@ -182,6 +152,11 @@
     <!-- MAIN JAVASCRIPT: DATA & LOGIC -->
     <script>
         // Efficient Index-Based Data Structure
+        const $ = id => document.getElementById(id);
+        const tabsOrder = ['home', 'lighting', 'juicer', 'bottles', 'mops', 'kitchen', 'hooks', 'covers', 'car', 'faucet'];
+        let currentIndex = 0;
+        let activeProduct = { name: '', price: '' };
+
         const inventory = [
             // LIGHTING
             { c: 'lighting', n: 'COB Rechargeable Keychain Light', p: 99, m: 200, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/41EofaexcXL._SL1000_.jpg', s: true, d: 'Ultra-bright, pocket-sized illumination. Features a built-in rechargeable battery, perfect for emergencies or everyday carry.' },
@@ -290,28 +265,34 @@
             { c: 'covers', n: 'AC Dust Protection Cover', p: null, m: null, i: 'https://placehold.co/400x400/F8FAFC/94A3B8?text=AC+Dust+Cover', s: false, d: 'Keep indoor AC unit clean. Wraps around the front grill to block dust accumulation.' },
             { c: 'covers', n: 'Blanket Storage Bag Cover', p: 199, m: 250, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/511ya0gxoL.jpg', s: true, d: 'Massive zippered organizer. Store heavy winter blankets away from moisture and pests.' },
             { c: 'covers', n: '3pcs Remote Cover', p: 149, m: 250, i: 'https://placehold.co/400x400/F8FAFC/94A3B8?text=Remote+Cover', s: true, d: 'Clear, shrink-wrap style covers for remotes. Protects against dust and sticky fingers.' },
-            { c: 'covers', n: 'Microwave Oven Dust Cover', p: null, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/51wbWu7OGWL.jpg', s: false, d: 'Keep microwave grease-free. Features side pockets to hold small utensils.' }
-        ];
+            { c: 'covers', n: 'Microwave Oven Dust Cover', p: null, m: null, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/51wbWu7OGWL.jpg', s: false, d: 'Keep microwave grease-free. Features side pockets to hold small utensils.' },
 
-        const tabsOrder = ['home', 'lighting', 'juicer', 'bottles', 'mops', 'kitchen', 'hooks', 'covers'];
-        let currentIndex = 0;
-        let activeProduct = { name: '', price: '' };
+            // CAR ACCESSORIES
+            { c: 'car', n: '2 PIS Blind Spot Mirror', p: 99, m: 200, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/1.jpg', s: true, d: 'Enhance driving safety with these HD blind spot mirrors. Easy to stick and fully adjustable.' },
+            { c: 'car', n: 'HD Vision Goggles', p: 149, m: 250, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/51BV8z4JjL._SX679_.jpg', s: true, d: 'Reduce night driving glare and eye strain with these high-definition vision goggles.' },
+            { c: 'car', n: 'Car Washing Gloves', p: null, m: null, i: 'https://placehold.co/400x400/F8FAFC/94A3B8?text=Washing+Gloves', s: false, d: 'Ultra-soft microfiber gloves for a scratch-free, thorough car wash.' },
+            { c: 'car', n: '3 in 1 Portable Vacuum Cleaner', p: 249, m: 350, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/61zaEllPGmL._SX569_.jpg', s: true, d: 'Powerful, portable vacuum to keep your car interior spotless and dust-free.' },
+            { c: 'car', n: 'Spray Gun', p: null, m: null, i: 'https://placehold.co/400x400/F8FAFC/94A3B8?text=Spray+Gun', s: false, d: 'High-pressure water spray gun for efficient car washing and gardening.' },
+            { c: 'car', n: 'Soft Microfiber Car Duster', p: null, m: null, i: 'https://placehold.co/400x400/F8FAFC/94A3B8?text=Car+Duster', s: false, d: 'Easily wipe away daily dust without scratching your vehicle\'s paint.' },
+            { c: 'car', n: 'Car Interior Cleaner Brush', p: 99, m: 150, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/51zvgITvuL._SX522_-Copy.jpg', s: true, d: 'Detailing brush to easily clean AC vents, keyboards, and dashboard crevices.' },
+
+            // FAUCET
+            { c: 'faucet', n: 'Faucet Sponge Holder', p: 149, m: 200, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/61N3w7FCG5L._SL1444_.jpg', s: true, d: 'Clamp-on sponge and soap holder to keep your kitchen sink area neat and tidy.' },
+            { c: 'faucet', n: 'Water Faucet Head with Key and Filter', p: 99, m: 150, i: 'https://ashoppervillage.com/wp-content/uploads/2024/09/3173mxjgGwL.jpg', s: true, d: 'Anti-splash faucet head with a built-in purifying filter for cleaner water.' },
+            { c: 'faucet', n: 'Faucet Water Filters', p: null, m: null, i: 'https://placehold.co/400x400/F8FAFC/94A3B8?text=Water+Filter', s: false, d: 'Replacement purifying filters to ensure clean, safe, and healthy tap water.' },
+            { c: 'faucet', n: 'Moveable Kitchen Faucet', p: 199, m: 450, i: 'https://ashoppervillage.com/wp-content/uploads/2025/12/61QeChopPoL._SX522_.jpg', s: true, d: '360-degree rotating flexible faucet head with spray modes for easy kitchen sink cleaning.' },
+            { c: 'faucet', n: 'Instant Electric Heating Water Faucet', p: 799, m: 1200, i: 'https://ashoppervillage.com/wp-content/uploads/2025/12/Hf90786f8f2f14b6d987b2d140f0bee0dG.jpg', s: true, d: 'Get hot water instantly directly from your tap. Digital display and safe heating tech.' }
+        ];
 
         // INITIALIZE APP
         function initApp() {
-            const nav = document.getElementById('inventory-nav');
-            const main = document.getElementById('main-content');
-            
-            // Generate Nav Buttons
-            let navHTML = '';
-            for(let i=1; i<tabsOrder.length; i++) {
-                const tab = tabsOrder[i];
-                navHTML += `<button class="tab-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest whitespace-nowrap text-slate-400" data-target="${tab}" onclick="openTab('${tab}')">${tab}</button>`;
-            }
-            nav.innerHTML = navHTML;
+            // Nav Buttons
+            $('inventory-nav').innerHTML = tabsOrder.slice(1).map(tab => 
+                `<button class="tab-btn px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest whitespace-nowrap text-slate-400" data-target="${tab}">${tab}</button>`
+            ).join('');
 
-            // Build Main Content Structure
-            let mainHTML = `
+            // Home Page Base
+            const homeHTML = `
                 <div id="home" class="tab-content active h-full flex flex-col justify-center items-center mt-6 md:mt-16 relative min-h-[60vh]">
                     <div class="text-center px-4 flex-grow flex flex-col justify-center items-center">
                         <h2 class="text-sm md:text-xl font-extrabold tracking-[0.2em] mb-8 text-slate-300 uppercase">Welcome to Banx Store</h2>
@@ -332,46 +313,74 @@
                     <div class="mt-20 md:absolute md:bottom-0 text-center w-full">
                         <p class="text-[10px] md:text-xs font-bold text-slate-400 tracking-[0.3em] uppercase flex items-center justify-center gap-1.5">
                             Made with <span class="text-red-500 animate-pulse text-sm">❤️</span> from 
-                            <span class="font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 text-sm tracking-wide uppercase">Belgaum</span>
+                            <span class="inline-flex items-stretch align-middle text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400 -mt-1">
+                                <span class="font-black text-[1.2rem] md:text-[1.4rem] leading-[0.85] tracking-tighter">BELGA</span>
+                                <span class="flex flex-col justify-between text-[0.35rem] md:text-[0.4rem] leading-[1] font-black ml-[2px] py-[1px] tracking-widest">
+                                    <span class="block">VI</span><span class="block">V</span><span class="block tracking-normal">um</span>
+                                </span>
+                            </span>
                         </p>
                     </div>
                 </div>`;
 
-            // Build Category Grids
-            const categories = [...new Set(inventory.map(p => p.c))];
-            categories.forEach(cat => {
-                let gridHTML = `<div id="${cat}" class="tab-content pb-10"><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">`;
-                
-                // Keep original index for referencing, then filter and sort (Available first)
-                const catProducts = inventory
-                    .map((p, index) => ({...p, originalIndex: index}))
+            // Category Grids
+            const gridsHTML = [...new Set(inventory.map(p => p.c))].map(cat => {
+                const cards = inventory.map((p, i) => ({...p, idx: i}))
                     .filter(p => p.c === cat)
-                    .sort((a, b) => (a.s === b.s ? 0 : a.s ? -1 : 1));
-                
-                catProducts.forEach(p => {
-                    const isOOS = !p.s;
-                    const priceStr = isOOS ? '—' : `₹${p.p}`;
-                    const mrpStr = p.m && !isOOS ? `<div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹${p.m}</div>` : `<div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>`;
-                    const saveStr = p.m && !isOOS ? `<span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹${p.m - p.p}</span>` : '';
-                    const badge = isOOS ? `<div class="stock-out-badge bg-slate-800">Coming Soon</div>` : '';
-                    
-                    gridHTML += `
-                    <div class="product-card ${isOOS ? 'stock-out' : ''}" onclick="showProduct(${p.originalIndex}, event)">
-                        ${badge}
-                        <div class="img-container aspect-square"><img src="${p.i}" loading="lazy" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
-                        <div class="p-4 pt-3 flex flex-col flex-grow">
-                            <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">${p.n}</h3>
-                            ${mrpStr}
-                            <div class="flex items-end justify-between mb-4"><span class="text-lg font-black ${isOOS ? 'text-slate-800' : 'text-blue-700'}">${priceStr}</span>${saveStr}</div>
-                            ${isOOS ? `<div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl">Coming Soon</div>` : `<button class="mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 transition-colors text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl shadow-sm">Buy Now</button>`}
-                        </div>
-                    </div>`;
-                });
-                gridHTML += `</div></div>`;
-                mainHTML += gridHTML;
-            });
-            main.innerHTML = mainHTML;
+                    .sort((a, b) => (a.s === b.s ? 0 : a.s ? -1 : 1))
+                    .map(p => {
+                        const isOOS = !p.s;
+                        const price = isOOS ? '—' : `₹${p.p}`;
+                        const mrp = p.m && !isOOS ? `<div class="text-[10px] font-bold text-slate-400 line-through mb-1">MRP: ₹${p.m}</div>` : `<div class="text-[10px] font-bold text-slate-400 mb-1">&nbsp;</div>`;
+                        const save = p.m && !isOOS ? `<span class="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Save ₹${p.m - p.p}</span>` : '';
+                        const btn = isOOS ? `<div class="mt-auto block w-full text-center bg-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl pointer-events-none">Coming Soon</div>` : `<button class="buy-btn mt-auto block w-full text-center bg-blue-600 hover:bg-blue-700 transition-colors text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-xl shadow-sm">Buy Now</button>`;
+                        
+                        return `
+                        <div class="product-card ${isOOS ? 'stock-out' : ''}" data-idx="${p.idx}">
+                            ${isOOS ? `<div class="stock-out-badge bg-slate-800">Coming Soon</div>` : ''}
+                            <div class="img-container aspect-square"><img src="${p.i}" loading="lazy" class="w-full h-full object-contain p-2" onerror="this.src='https://placehold.co/400x400/F8FAFC/94A3B8?text=Image+Error'"></div>
+                            <div class="p-4 pt-3 flex flex-col flex-grow">
+                                <h3 class="font-bold text-xs mb-2 h-8 overflow-hidden">${p.n}</h3>
+                                ${mrp}
+                                <div class="flex items-end justify-between mb-4"><span class="text-lg font-black ${isOOS ? 'text-slate-800' : 'text-blue-700'}">${price}</span>${save}</div>
+                                ${btn}
+                            </div>
+                        </div>`;
+                }).join('');
+                return `<div id="${cat}" class="tab-content pb-10"><div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">${cards}</div></div>`;
+            }).join('');
+
+            $('main-content').innerHTML = homeHTML + gridsHTML;
         }
+
+        // DELEGATED EVENT LISTENERS
+        document.addEventListener('click', e => {
+            // Tabs
+            const tabBtn = e.target.closest('.tab-btn');
+            if (tabBtn) openTab(tabBtn.dataset.target);
+
+            // Product Cards
+            const card = e.target.closest('.product-card');
+            if (card) {
+                const p = inventory[card.dataset.idx];
+                if (e.target.closest('.buy-btn') && p.s) {
+                    activeProduct = { name: p.n, price: `₹${p.p}` };
+                    openCheckout();
+                } else {
+                    showProduct(p);
+                }
+            }
+
+            // Dropdown Menu toggle and outside click
+            const menu = $('dropdown-menu');
+            if (e.target.closest('button[onclick="toggleMenu()"]')) {
+                menu.classList.toggle('opacity-0');
+                menu.classList.toggle('scale-95');
+                menu.classList.toggle('pointer-events-none');
+            } else if (menu && !menu.contains(e.target) && !menu.classList.contains('opacity-0')) {
+                menu.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+            }
+        });
 
         // NAVIGATION LOGIC
         function navigateTo(index) {
@@ -379,9 +388,9 @@
             currentIndex = index;
             const tabName = tabsOrder[currentIndex];
             
-            Array.from(document.getElementsByClassName("tab-content")).forEach(el => el.classList.remove("active"));
-            Array.from(document.getElementsByClassName("tab-btn")).forEach(el => el.classList.remove("active"));
-            document.getElementById(tabName).classList.add("active");
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove("active"));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove("active"));
+            $(tabName).classList.add("active");
             
             if (tabName !== 'home') {
                 const targetBtn = document.querySelector(`.tab-btn[data-target="${tabName}"]`);
@@ -394,90 +403,66 @@
         function openTab(tabName) { navigateTo(tabsOrder.indexOf(tabName)); }
         function goHome() { navigateTo(0); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-        // UI INTERACTION
-        function toggleMenu() {
-            const menu = document.getElementById('dropdown-menu');
-            if(menu.classList.contains('opacity-0')) {
-                menu.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
-            } else {
-                menu.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-            }
-        }
-        document.addEventListener('click', e => {
-            const menu = document.getElementById('dropdown-menu');
-            if (!e.target.closest('button[onclick="toggleMenu()"]') && !menu.contains(e.target) && menu) {
-                menu.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-            }
-        });
-
         // MODALS
-        function showProduct(index, event) {
-            const p = inventory[index];
-            
-            // If Buy Now button was clicked directly on the card
-            if (event && event.target.tagName.toLowerCase() === 'button' && p.s) {
-                activeProduct.name = p.n; activeProduct.price = `₹${p.p}`;
-                openCheckout();
-                event.stopPropagation();
-                return;
-            }
-
-            activeProduct.name = p.n; activeProduct.price = p.s ? `₹${p.p}` : '—';
-            document.getElementById('modalImg').src = p.i;
-            document.getElementById('modalTitle').innerText = p.n;
-            document.getElementById('modalDesc').innerText = p.d;
+        function toggleModal(id, show) {
+            const el = $(id);
+            if (show) el.classList.replace('hidden', 'flex');
+            else el.classList.replace('flex', 'hidden');
+        }
+        function closeModal(id) { toggleModal(id, false); }
+        function openStory() { toggleModal('storyModal', true); }
+        
+        function showProduct(p) {
+            activeProduct = { name: p.n, price: p.s ? `₹${p.p}` : '—' };
+            $('modalImg').src = p.i;
+            $('modalTitle').innerText = p.n;
+            $('modalDesc').innerText = p.d;
 
             if(!p.s) {
-                document.getElementById('modalBuyBtn').classList.add('hidden');
-                document.getElementById('modalBuyBtn').classList.remove('flex');
-                document.getElementById('modalOosBtn').classList.remove('hidden');
-                document.getElementById('modalOosBtn').innerText = 'Coming Soon'; // Updated
-                document.getElementById('modalPrice').innerText = '—';
-                document.getElementById('modalMrp').innerText = '';
+                $('modalBuyBtn').classList.replace('flex', 'hidden');
+                $('modalOosBtn').classList.remove('hidden');
+                $('modalPrice').innerText = '—';
+                $('modalMrp').innerText = '';
             } else {
-                document.getElementById('modalBuyBtn').classList.remove('hidden');
-                document.getElementById('modalBuyBtn').classList.add('flex');
-                document.getElementById('modalOosBtn').classList.add('hidden');
-                document.getElementById('modalPrice').innerText = `₹${p.p}`;
-                document.getElementById('modalMrp').innerText = p.m ? `MRP: ₹${p.m}` : '';
+                $('modalBuyBtn').classList.replace('hidden', 'flex');
+                $('modalOosBtn').classList.add('hidden');
+                $('modalPrice').innerText = `₹${p.p}`;
+                $('modalMrp').innerText = p.m ? `MRP: ₹${p.m}` : '';
             }
-            document.getElementById('productModal').classList.remove('hidden');
-            document.getElementById('productModal').classList.add('flex');
+            toggleModal('productModal', true);
         }
 
-        function closeModal(id) { document.getElementById(id).classList.replace('flex', 'hidden'); }
-        function openStory() { document.getElementById('storyModal').classList.replace('hidden', 'flex'); }
         function openGame() {
-            document.getElementById('gameModal').classList.replace('hidden', 'flex');
-            document.getElementById('boxesContainer').classList.replace('hidden', 'flex');
-            document.getElementById('gameResult').classList.add('hidden');
-            document.getElementById('gameText').innerText = "Tap a mystery box to reveal a secret WhatsApp discount code!";
-            Array.from(document.getElementById('boxesContainer').children).forEach(b => b.classList.remove('box-pop'));
+            toggleModal('gameModal', true);
+            $('boxesContainer').classList.replace('hidden', 'flex');
+            $('gameResult').classList.add('hidden');
+            $('gameText').innerText = "Tap a mystery box to reveal a secret WhatsApp discount code!";
+            document.querySelectorAll('.game-box').forEach(b => b.classList.remove('box-pop'));
         }
 
         function playGame(el) {
             el.classList.add('box-pop');
             setTimeout(() => {
                 const codes = ["BANX10", "FREEDELIVERY", "FLAT50"];
-                document.getElementById('boxesContainer').classList.replace('flex', 'hidden');
-                document.getElementById('gameResult').classList.remove('hidden');
-                document.getElementById('winCode').innerText = codes[Math.floor(Math.random() * codes.length)];
-                document.getElementById('gameText').innerText = "🎉 You Won! 🎉";
+                $('boxesContainer').classList.replace('flex', 'hidden');
+                $('gameResult').classList.remove('hidden');
+                $('winCode').innerText = codes[Math.floor(Math.random() * codes.length)];
+                $('gameText').innerText = "🎉 You Won! 🎉";
             }, 300);
         }
 
         // CHECKOUT & WHATSAPP
         function openCheckout() {
             closeModal('productModal'); 
-            document.getElementById('checkoutModal').classList.replace('hidden', 'flex');
+            toggleModal('checkoutModal', true);
         }
 
         function finalSubmit() {
-            const name = document.getElementById('custName').value.trim();
-            const addr = document.getElementById('custAddress').value.trim();
-            const pin = document.getElementById('custPincode').value.trim();
-            const phone = document.getElementById('custPhone').value.trim();
-            const acc = document.getElementById('acceptTerms').checked;
+            const name = $('custName').value.trim();
+            const addr = $('custAddress').value.trim();
+            const pin = $('custPincode').value.trim();
+            const phone = $('custPhone').value.trim();
+            const acc = $('acceptTerms').checked;
 
             if (!name || !addr || !pin || !phone) return alert("Please enter all delivery details!"); 
             if (!acc) return alert("Please accept the purchase confirmation!"); 
@@ -488,8 +473,8 @@
 
             window.open(`https://wa.me/${phoneSel}?text=${text}`, '_blank');
             closeModal('checkoutModal');
-            ['custName','custAddress','custPincode','custPhone'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('acceptTerms').checked = false;
+            ['custName','custAddress','custPincode','custPhone'].forEach(id => $(id).value = '');
+            $('acceptTerms').checked = false;
         }
 
         // TOUCH SWIPE
